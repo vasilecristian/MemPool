@@ -6,12 +6,12 @@
 #define MANAGER_BASE_H
 
 
-#include "vsge/base/fast-rtti/RTTI.h"
-#include "vsge/utils/utils.h"
+#include <RTTI.h>
+#include "utils.h"
 
 using namespace fastrtti;
 
-namespace vsge
+namespace gu
 {
     
     
@@ -73,14 +73,14 @@ namespace vsge
         virtual void Remove(key keyName, bool delete_obj = false)
         {
             ///not implemented in this class (base class)
-            VSGE_ASSERT(false);
+            GU_ASSERT(false);
         };
 
         /** Delete all elements from the map. */
         void DeleteAll(void)
         {
             ///not implemented in this class (base class)
-            VSGE_ASSERT(false);
+            GU_ASSERT(false);
         }
 
         /**
@@ -97,7 +97,7 @@ namespace vsge
             }
 
             ///this means that the object must be already loaded, before to call Get!
-            VSGE_ASSERT(false);
+            GU_ASSERT(false);
             return managedClass(NULL);
         }
 
@@ -127,6 +127,6 @@ namespace vsge
         virtual managedClass GetOrLoadFromFile(const key& keyName, const std::string& file) = 0;
     };
 
-} //namespace vsge
+} //namespace gu
 
 #endif //MANAGER_BASE_H

@@ -6,13 +6,14 @@
 #define INSTANCE_FACTORY_H
 
 #include <map>
-#include "vsge/base/Singleton.hpp"
-#include "vsge/base/MemLeakDetector.h"
-#include "vsge/base/ResParams.h"
-#include "vsge/base/fast-rtti/RTTI.h"
+#include "Singleton.hpp"
+#include "Params.h"
+#include "log.h"
+#include <RTTI.h>
+#include <sstream>
 
 
-namespace vsge
+namespace gu
 {
 
     /**
@@ -31,7 +32,7 @@ namespace vsge
      * The constructor "className(const std::string& typeID)" will be declared and implemented.
      *                 This is used in REGISTER_TO_INSTANCE_FACTORY to create the first instance of this class, 
      *                 that will set the class ID (aka className)
-     * The constructor "className(ResParams* params)" . Used in CreateInstance static template function.
+     * The constructor "className(Params* params)" . Used in CreateInstance static template function.
      *                 This is used to receive the pointer to structure that will contines all the values
      *                 needed by this class. The ideea is to load from a file (an xml with params) all the 
      *                 parameters and their values. This constructor will be used in CreateInstance function.
@@ -40,14 +41,14 @@ namespace vsge
     #define DECLARE_AS_FACTORYABLE(className) \
                                     public: \
                                         className(const std::string& typeID):Factoryable< className >(typeID){} \
-                                        className(smart_ptr<ResParams> params):m_params(params){}; \
+                                        className(smart_ptr<Params> params):m_params(params){}; \
                                     private: \
-                                        smart_ptr<ResParams> m_params; 
+                                        smart_ptr<Params> m_params; 
 
 
 
     /** This is a typedef for the function that can create the object. */
-    typedef RTTI* (*FunctionThatCreatesInstance)(smart_ptr<ResParams>);
+    typedef RTTI* (*FunctionThatCreatesInstance)(smart_ptr<Params>);
 
 
     /** This is a typedef for std::map<std::string, FunctionThatCreatesInstance> 
@@ -61,7 +62,7 @@ namespace vsge
     /**
      * This class is designed to be the abstract Instance Factory. 
      * This will receive as parameters the typeID (which is a string) and 
-     * a pointer to ResParams instance. The ResParams will store parameters loaded from a file.
+     * a pointer to Params instance. The Params will store parameters loaded from a file.
      */
     class InstanceFactory
     {
@@ -96,10 +97,10 @@ namespace vsge
         * Function used to create an instance based on typeID and params.
         *
         * @param typeID is an std::string used to specify the id of the object (aka the name of the class).
-        * @param params is an ResParams* pointer used to sent to the object the instance of ResParams with params and values.
+        * @param params is an Params* pointer used to sent to the object the instance of Params with params and values.
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-        RTTI* CreateInstance(const std::string &typeID, smart_ptr<ResParams> params)
+        RTTI* CreateInstance(const std::string &typeID, smart_ptr<Params> params)
         {
             if(m_abstractUnits.find(typeID) != m_abstractUnits.end())
             {
@@ -123,9 +124,9 @@ namespace vsge
         * @param params is an pointer used to sent to the function the params class (the parameters).
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-        RTTI* CreateInstance(smart_ptr<ResParams> params)
+        RTTI* CreateInstance(smart_ptr<Params> params)
         {
-            VSGE_ASSERT(params != NULL);
+            GU_ASSERT(params != NULL);
 
             return CreateInstance(params->GetClassTypeID(), params);
         }
@@ -167,10 +168,10 @@ namespace vsge
         * you can call it without an instance. This is used as a callback, and will 
         * be added to the MapNameToFunction.
         *
-        * @param params is a smart pointer to the instance (ResParams) with parameters.
+        * @param params is a smart pointer to the instance (Params) with parameters.
         * @return a pointer to an RTTI instance.
         */
-        static RTTI* CreateInstance(smart_ptr<ResParams> params);
+        static RTTI* CreateInstance(smart_ptr<Params> params);
     };
 
     
@@ -180,12 +181,12 @@ namespace vsge
     * @param params is a void* pointer to the class with parameters.
     */
     template<class C>
-    RTTI* Factoryable<C>::CreateInstance(smart_ptr<ResParams> params)
+    RTTI* Factoryable<C>::CreateInstance(smart_ptr<Params> params)
     {
         RTTI* returnVal = NEW C(params);
         return returnVal;
     }
 
-} //namespace vsge
+} //namespace gu
 
 #endif //INSTANCE_FACTORY_H
