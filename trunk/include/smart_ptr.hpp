@@ -231,7 +231,7 @@ namespace fastrtti
 			#endif //USE_THREAD_SAFE_SMARTP
 
             G* ptr = fastrtti_dynamic_cast<G>(m_pData);
-            VSGE_ASSERT(ptr != NULL);
+            GU_ASSERT(ptr != NULL);
             if(ptr)
             {
 			    #if USE_THREAD_SAFE_SMARTP
@@ -258,7 +258,7 @@ namespace fastrtti
 			//this assert is here to generate an compile error !!!!!!
 			//if the object from pointer m_pData does not extent the IRTTI interface 
             //a compile error is generated! 
-			VSGE_ASSERT(m_pData->IsRTTI());
+			GU_ASSERT(m_pData->IsRTTI());
 
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);

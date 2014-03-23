@@ -5,21 +5,21 @@
 #ifndef PARAMSMAP_H
 #define PARAMSMAP_H
 
-#include "vsge/base/fast-rtti/RTTI.h"
-#include "vsge/base/smart_ptr.hpp"
-#include "vsge/base/ManagerBase.hpp"
+#include <RTTI.h>
+#include "smart_ptr.hpp"
+#include "ManagerBase.hpp"
 #include <string>
+#include <vector>
 
-class TiXmlElement;
 
-namespace vsge
+namespace gu
 {
     /**
      * This class will store one resource parameter. Along with the value, will be stored the type.
      * The m_value is smart pointer of smart_ptr<RTTI> type , so can store any type of instances if that instance 
      * is derived from IRTTI.
      */
-    class RPContent:public IRTTI<RPContent>
+    class ParanContent:public IRTTI<ParanContent>
     {
 		/** The name of the parameter. */
         std::string m_name;
@@ -42,7 +42,7 @@ namespace vsge
          *        from string in pointer of type 'type'
          * @return an smart_ptr<RTTI> for the instance. 
          */
-        smart_ptr<RTTI> GetValueAsSmartRTTI(const std::string& type, TiXmlElement* xmlNode);
+        smart_ptr<RTTI> GetValueAsSmartRTTI(const std::string& type);
 
     public:
 
@@ -54,7 +54,7 @@ namespace vsge
          * @param type is the type of this parameter (string).
          * @param xmlNode is a pointer to TiXmlElement that contines the value.
          */
-        RPContent(const std::string& name, const std::string& type, TiXmlElement* xmlNode);
+        ParanContent(const std::string& name, const std::string& type);
 
 
         /**
@@ -65,11 +65,11 @@ namespace vsge
          * @param type is the type of this parameter (string).
          * @param value is a smart_ptr<RTTI> that contines the value.
          */
-        RPContent(const std::string& name, const std::string& type, smart_ptr<RTTI> value);
+        ParanContent(const std::string& name, const std::string& type, smart_ptr<RTTI> value);
 
 
 		/** The destructor. */
-        ~RPContent();
+        ~ParanContent();
 
 		/** @return the name of the parameter. */
         inline std::string& GetName(){return m_name;};
@@ -165,7 +165,7 @@ namespace vsge
      * <import> read all the parameters from a similar file.
      * <param> will override or add the values to the map.
      */
-    class ResParams: public ManagerBase<const std::string, smart_ptr<RPContent> >
+    class Params: public ManagerBase<const std::string, smart_ptr<ParanContent> >
     {  
         
     protected:
@@ -179,12 +179,12 @@ namespace vsge
 
     public:
 
-        /**  The Constructor of ResParams */
-        ResParams():m_classTypeID("")
+        /**  The Constructor of Params */
+        Params():m_classTypeID("")
         {};
 
 		/** The destructor */
-        virtual ~ResParams()
+        virtual ~Params()
         {};
 
         /**
@@ -193,7 +193,7 @@ namespace vsge
          * @param rootNode is a TiXmlElement& for the root node (aka <Params>)
          * @return is true or false for Success or Fail.
          */
-        virtual bool LoadParams(const TiXmlElement& rootNode);
+        virtual bool LoadParams();
 
         /**
          * This is a virtual function that load the data from an xml file.
@@ -227,7 +227,7 @@ namespace vsge
          * 
          * @return an Smart pointer for the parameter with paramName.
          */
-        inline smart_ptr<RPContent> GetParam(const std::string& paramName)
+        inline smart_ptr<ParanContent> GetParam(const std::string& paramName)
         {
             return this->Get(paramName); 
         }
@@ -238,7 +238,7 @@ namespace vsge
          * 
          * @return an Smart pointer for the parameter with type 'type'.
          */
-        smart_ptr<RPContent> GetFirstParamOfType(const std::string& type);
+        smart_ptr<ParanContent> GetFirstParamOfType(const std::string& type);
 
 
         /**
@@ -246,25 +246,12 @@ namespace vsge
          * 
          * @return an vector of Smart pointers for the parameter with type 'type'.
          */
-        std::vector< smart_ptr<RPContent> > GetAllParamsOfType(const std::string& type);
+        std::vector< smart_ptr<ParanContent> > GetAllParamsOfType(const std::string& type);
 
 
 
     private:
-        /**
-         * Use this to Get the object from the map or load it if does 
-         * not exists in the map. The object loaded is added to the map.
-         * If the load fails will be returned an NULL object.
-         * @param keyName is the name of the key that you want get.
-         * @param file represent the filename to load.
-         * @return the object loaded.
-         */
-        smart_ptr<RPContent> GetOrLoadFromFile(const std::string& keyName, const std::string& file) override
-        {
-            ///do not use this becaseu is not applicable
-            VSGE_ASSERT(false);
-            return  smart_ptr<RPContent>(NULL);
-        }
+       
     };
 };
 
