@@ -12,7 +12,7 @@
 
 #define USE_THREAD_SAFE_SMARTP 1
 
-namespace fastrtti
+namespace gu
 {
 
     /** This is the template class implementation of a smart pointer. */
@@ -329,8 +329,6 @@ namespace fastrtti
         };
 
     };
-
-
 
 };
 
