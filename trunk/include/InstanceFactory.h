@@ -126,7 +126,7 @@ namespace gu
         */
         RTTI* CreateInstance(smart_ptr<Params> params)
         {
-            GU_ASSERT(params != NULL);
+            GU_ASSERT(params.GetPtr() != NULL);
 
             return CreateInstance(params->GetClassTypeID(), params);
         }
