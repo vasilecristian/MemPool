@@ -5,7 +5,7 @@
 #ifndef PARAMSMAP_H
 #define PARAMSMAP_H
 
-#include <RTTI.h>
+#include <fast-rtti/RTTI.h>
 #include "smart_ptr.hpp"
 #include "ManagerBase.hpp"
 #include <string>
