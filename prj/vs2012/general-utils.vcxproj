@@ -23,7 +23,6 @@
     <ClInclude Include="..\..\include\InstanceFactory.h" />
     <ClInclude Include="..\..\include\Log.h" />
     <ClInclude Include="..\..\include\ManagerBase.hpp" />
-    <ClInclude Include="..\..\include\Params.h" />
     <ClInclude Include="..\..\include\Singleton.hpp" />
     <ClInclude Include="..\..\include\smart_ptr.hpp" />
     <ClInclude Include="..\..\include\Threads.h" />
@@ -33,7 +32,6 @@
     <ClCompile Include="..\..\source\fast-rtti\RTTI.cpp" />
     <ClCompile Include="..\..\source\InstanceFactory.cpp" />
     <ClCompile Include="..\..\source\Log.cpp" />
-    <ClCompile Include="..\..\source\Params.cpp" />
     <ClCompile Include="..\..\source\Threads.cpp" />
     <ClCompile Include="..\..\source\Utils.cpp" />
   </ItemGroup>
