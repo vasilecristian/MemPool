@@ -119,10 +119,11 @@ namespace gu
         }
 
         /**
-        * Function used to create an instance based on typeID and params.
+        * Function used to create an instance based on type and params.
         *
-        * @param typeID is an std::string used to specify the id of the object (aka the name of the class).
-        * @param params is an Params* pointer used to sent to the object the instance of Params with params and values.
+        * @param typeID is an std::string used to specify the type of the object (aka the name of the class).
+        * @param params is an FactoryParamsBase* pointer used to sent to the object the instance of FactoryParamsBase 
+        * with params and values.
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
          fastrtti::RTTI* CreateInstance(const std::string &typeID, smart_ptr<FactoryParamsBase> params)
@@ -144,7 +145,7 @@ namespace gu
         }
 
         /**
-        * Function used to create an instance based on typeID and params.
+        * Function used to create an instance based on params.
         *
         * @param params is an pointer used to sent to the function the params class (the parameters).
         * @return an RTTI* pointer representing the pointer to the new created instance.

@@ -22,7 +22,6 @@
     <ClInclude Include="..\..\include\fast-rtti\RTTI.h" />
     <ClInclude Include="..\..\include\InstanceFactory.h" />
     <ClInclude Include="..\..\include\Log.h" />
-    <ClInclude Include="..\..\include\ManagerBase.hpp" />
     <ClInclude Include="..\..\include\Singleton.hpp" />
     <ClInclude Include="..\..\include\smart_ptr.hpp" />
     <ClInclude Include="..\..\include\Threads.h" />

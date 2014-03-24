@@ -21,9 +21,6 @@
     <ClInclude Include="..\..\include\InstanceFactory.h">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\ManagerBase.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\Singleton.hpp">
       <Filter>include</Filter>
     </ClInclude>
