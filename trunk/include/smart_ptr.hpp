@@ -5,15 +5,17 @@
 #ifndef SMARTP_BASE_H
 #define SMARTP_BASE_H
 
-#include <RTTI.h>
+#include <fast-rtti/RTTI.h>
 
 #include <mutex>
 #include <memory>
 
 #define USE_THREAD_SAFE_SMARTP 1
 
+
 namespace gu
 {
+    namespace fr = fastrtti;
 
     /** This is the template class implementation of a smart pointer. */
     template < typename T >
@@ -253,7 +255,7 @@ namespace gu
 
         /** Specialized Cast that will return smart_ptr<RTTI> */
         template <>
-        inline smart_ptr<RTTI> DynamicCast<RTTI>()
+        inline smart_ptr<fr::RTTI> DynamicCast<fr::RTTI>()
         {   
 			//this assert is here to generate an compile error !!!!!!
 			//if the object from pointer m_pData does not extent the IRTTI interface 
@@ -262,18 +264,18 @@ namespace gu
 
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
-			return smart_ptr<RTTI>((RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
+			return smart_ptr<fr::RTTI>((fr::RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
 			#else //!USE_THREAD_SAFE_SMARTP
-			return smart_ptr<RTTI>((RTTI*)m_pData, m_referenceCounter);
+			return smart_ptr<RTTI>((fr::RTTI*)m_pData, m_referenceCounter);
 			#endif //USE_THREAD_SAFE_SMARTP
         }
 
         /**
          * Specialized Cast that will return smart_ptr<RTTI>
          */
-        inline smart_ptr<RTTI> DynamicCastToSmartRTTI()
+        inline smart_ptr<fr::RTTI> DynamicCastToSmartRTTI()
         {
-            return DynamicCast<RTTI>();
+            return DynamicCast<fr::RTTI>();
         }
 
 		/**

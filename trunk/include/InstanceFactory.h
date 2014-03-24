@@ -9,7 +9,7 @@
 #include "Singleton.hpp"
 #include "Params.h"
 #include "log.h"
-#include <RTTI.h>
+#include <fast-rtti/RTTI.h>
 #include <sstream>
 
 

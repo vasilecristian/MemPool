@@ -6,7 +6,7 @@
 #define MANAGER_BASE_H
 
 
-#include <RTTI.h>
+#include <fast-rtti/RTTI.h>
 #include "utils.h"
 
 using namespace fastrtti;
