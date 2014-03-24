@@ -6,15 +6,40 @@
 #define INSTANCE_FACTORY_H
 
 #include <map>
-#include "Singleton.hpp"
-#include "Params.h"
-#include "log.h"
-#include <fast-rtti/RTTI.h>
 #include <sstream>
+
+#include <fast-rtti/RTTI.h>
+#include "Singleton.hpp"
+#include "smart_ptr.hpp"
+#include "Log.h"
+
+
 
 
 namespace gu
 {
+
+
+    class FactoryParamsBase
+    {  
+        /** The type of the parameter .
+         * This is the name of the class that must be created to use this parameters.
+         * Will be used by the InstalceFactory mechanism.
+         */
+        std::string m_type;
+
+    public:
+
+         /**  The Constructor of Params */
+        FactoryParamsBase(std::string type):m_type(type) {};
+
+		/** The destructor */
+        virtual ~FactoryParamsBase(){};
+
+        std::string& GetType() { return m_type;}; 
+    };
+
+
 
     /**
      * Used to declare/construct an object using the constructor that accept as parameter the ClassName.
@@ -41,14 +66,14 @@ namespace gu
     #define DECLARE_AS_FACTORYABLE(className) \
                                     public: \
                                         className(const std::string& typeID):Factoryable< className >(typeID){} \
-                                        className(smart_ptr<Params> params):m_params(params){}; \
+                                        className(smart_ptr<FactoryParamsBase> params):m_params(params){}; \
                                     private: \
-                                        smart_ptr<Params> m_params; 
+                                        smart_ptr<FactoryParamsBase> m_params; 
 
 
 
     /** This is a typedef for the function that can create the object. */
-    typedef RTTI* (*FunctionThatCreatesInstance)(smart_ptr<Params>);
+    typedef fastrtti::RTTI* (*FunctionThatCreatesInstance)(smart_ptr<FactoryParamsBase>);
 
 
     /** This is a typedef for std::map<std::string, FunctionThatCreatesInstance> 
@@ -100,7 +125,7 @@ namespace gu
         * @param params is an Params* pointer used to sent to the object the instance of Params with params and values.
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-        RTTI* CreateInstance(const std::string &typeID, smart_ptr<Params> params)
+         fastrtti::RTTI* CreateInstance(const std::string &typeID, smart_ptr<FactoryParamsBase> params)
         {
             if(m_abstractUnits.find(typeID) != m_abstractUnits.end())
             {
@@ -124,11 +149,11 @@ namespace gu
         * @param params is an pointer used to sent to the function the params class (the parameters).
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-        RTTI* CreateInstance(smart_ptr<Params> params)
+         fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params)
         {
             GU_ASSERT(params.GetPtr() != NULL);
 
-            return CreateInstance(params->GetClassTypeID(), params);
+            return CreateInstance(params->GetType(), params);
         }
 
     };
@@ -137,7 +162,7 @@ namespace gu
 
     /** All factoryable objects must derive this template class. */
     template<class C>
-    class Factoryable: public IRTTI< Factoryable<C> >
+    class Factoryable: public  fastrtti::IRTTI< Factoryable<C> >
     {
     protected:
 
@@ -171,7 +196,7 @@ namespace gu
         * @param params is a smart pointer to the instance (Params) with parameters.
         * @return a pointer to an RTTI instance.
         */
-        static RTTI* CreateInstance(smart_ptr<Params> params);
+        static  fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params);
     };
 
     
@@ -181,7 +206,7 @@ namespace gu
     * @param params is a void* pointer to the class with parameters.
     */
     template<class C>
-    RTTI* Factoryable<C>::CreateInstance(smart_ptr<Params> params)
+     fastrtti::RTTI* Factoryable<C>::CreateInstance(smart_ptr<FactoryParamsBase> params)
     {
         RTTI* returnVal = new C(params);
         return returnVal;

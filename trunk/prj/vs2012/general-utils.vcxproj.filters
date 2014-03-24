@@ -30,9 +30,6 @@
     <ClInclude Include="..\..\include\smart_ptr.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\Params.h">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\include\Threads.h">
       <Filter>include</Filter>
     </ClInclude>
@@ -48,9 +45,6 @@
       <Filter>source\fast-rtti</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\InstanceFactory.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Params.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\Threads.cpp">
