@@ -183,7 +183,7 @@ namespace gu
     template<class C>
     RTTI* Factoryable<C>::CreateInstance(smart_ptr<Params> params)
     {
-        RTTI* returnVal = NEW C(params);
+        RTTI* returnVal = new C(params);
         return returnVal;
     }
 
