@@ -65,10 +65,10 @@ namespace gu
      */
     #define DECLARE_AS_FACTORYABLE(className) \
                                     public: \
-                                        className(const std::string& typeID):Factoryable< className >(typeID){} \
-                                        className(smart_ptr<FactoryParamsBase> params):m_params(params){}; \
+                                        className(const std::string& typeID):gu::Factoryable< className >(typeID){} \
+                                        className(gu::smart_ptr<gu::FactoryParamsBase> params):m_params(params){}; \
                                     private: \
-                                        smart_ptr<FactoryParamsBase> m_params; 
+                                        gu::smart_ptr<gu::FactoryParamsBase> m_params; 
 
 
 
