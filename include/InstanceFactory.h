@@ -18,8 +18,6 @@
 
 namespace gu
 {
-
-
     class FactoryParamsBase
     {  
         /** The type of the parameter .
@@ -150,7 +148,7 @@ namespace gu
         * @param params is an pointer used to sent to the function the params class (the parameters).
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-         fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params)
+        fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params)
         {
             GU_ASSERT(params.GetPtr() != NULL);
 
@@ -207,7 +205,7 @@ namespace gu
     * @param params is a void* pointer to the class with parameters.
     */
     template<class C>
-     fastrtti::RTTI* Factoryable<C>::CreateInstance(smart_ptr<FactoryParamsBase> params)
+    fastrtti::RTTI* Factoryable<C>::CreateInstance(smart_ptr<FactoryParamsBase> params)
     {
         RTTI* returnVal = new C(params);
         return returnVal;
