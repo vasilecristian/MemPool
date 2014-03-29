@@ -10,7 +10,7 @@
 
 #include <fast-rtti/RTTI.h>
 #include "Singleton.hpp"
-#include "smart_ptr.hpp"
+#include "SmartPtr.hpp"
 #include "Log.h"
 
 
@@ -64,14 +64,14 @@ namespace gu
     #define DECLARE_AS_FACTORYABLE(className) \
                                     public: \
                                         className(const std::string& typeID):gu::Factoryable< className >(typeID){} \
-                                        className(gu::smart_ptr<gu::FactoryParamsBase> params):m_params(params){}; \
+                                        className(gu::SmartPtr<gu::FactoryParamsBase> params):m_params(params){}; \
                                     private: \
-                                        gu::smart_ptr<gu::FactoryParamsBase> m_params; 
+                                        gu::SmartPtr<gu::FactoryParamsBase> m_params; 
 
 
 
     /** This is a typedef for the function that can create the object. */
-    typedef fastrtti::RTTI* (*FunctionThatCreatesInstance)(smart_ptr<FactoryParamsBase>);
+    typedef fastrtti::RTTI* (*FunctionThatCreatesInstance)(SmartPtr<FactoryParamsBase>);
 
 
     /** This is a typedef for std::map<std::string, FunctionThatCreatesInstance> 
@@ -124,7 +124,7 @@ namespace gu
         * with params and values.
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-         fastrtti::RTTI* CreateInstance(const std::string &typeID, smart_ptr<FactoryParamsBase> params)
+         fastrtti::RTTI* CreateInstance(const std::string &typeID, SmartPtr<FactoryParamsBase> params)
         {
             if(m_abstractUnits.find(typeID) != m_abstractUnits.end())
             {
@@ -148,7 +148,7 @@ namespace gu
         * @param params is an pointer used to sent to the function the params class (the parameters).
         * @return an RTTI* pointer representing the pointer to the new created instance.
         */
-        fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params)
+        fastrtti::RTTI* CreateInstance(SmartPtr<FactoryParamsBase> params)
         {
             GU_ASSERT(params.GetPtr() != NULL);
 
@@ -196,12 +196,12 @@ namespace gu
         * @param params is a smart pointer to the instance (Params) with parameters.
         * @return a pointer to an RTTI instance.
         */
-        static  fastrtti::RTTI* CreateInstance(smart_ptr<FactoryParamsBase> params);
+        static  fastrtti::RTTI* CreateInstance(SmartPtr<FactoryParamsBase> params);
     };
 
     
     template<class C>
-    fastrtti::RTTI* Factoryable<C>::CreateInstance(smart_ptr<FactoryParamsBase> params)
+    fastrtti::RTTI* Factoryable<C>::CreateInstance(SmartPtr<FactoryParamsBase> params)
     {
         RTTI* returnVal = new C(params);
         return returnVal;

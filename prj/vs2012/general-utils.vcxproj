@@ -19,18 +19,30 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\Drawable.hpp" />
+    <ClInclude Include="..\..\include\EventBase.hpp" />
+    <ClInclude Include="..\..\include\EventReceiver.hpp" />
+    <ClInclude Include="..\..\include\EventsQueue.h" />
     <ClInclude Include="..\..\include\fast-rtti\RTTI.h" />
     <ClInclude Include="..\..\include\InstanceFactory.h" />
     <ClInclude Include="..\..\include\Log.h" />
+    <ClInclude Include="..\..\include\MemPool.h" />
     <ClInclude Include="..\..\include\Singleton.hpp" />
-    <ClInclude Include="..\..\include\smart_ptr.hpp" />
+    <ClInclude Include="..\..\include\SmartPtr.hpp" />
+    <ClInclude Include="..\..\include\StateMachine\State.h" />
+    <ClInclude Include="..\..\include\StateMachine\StatesStack.h" />
     <ClInclude Include="..\..\include\Threads.h" />
+    <ClInclude Include="..\..\include\Updatable.hpp" />
     <ClInclude Include="..\..\include\Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\EventsQueue.cpp" />
     <ClCompile Include="..\..\source\fast-rtti\RTTI.cpp" />
     <ClCompile Include="..\..\source\InstanceFactory.cpp" />
     <ClCompile Include="..\..\source\Log.cpp" />
+    <ClCompile Include="..\..\source\MemPool.cpp" />
+    <ClCompile Include="..\..\source\StateMachine\State.cpp" />
+    <ClCompile Include="..\..\source\StateMachine\StatesStack.cpp" />
     <ClCompile Include="..\..\source\Threads.cpp" />
     <ClCompile Include="..\..\source\Utils.cpp" />
   </ItemGroup>
