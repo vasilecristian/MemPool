@@ -19,7 +19,7 @@ namespace gu
 
     /** This is the template class implementation of a smart pointer. */
     template < typename T >
-    class smart_ptr
+    class SmartPtr
     {
 
     private:
@@ -41,7 +41,7 @@ namespace gu
     public:
 
         /** The default constructor, initialize the reference counter with value 1. */
-        smart_ptr()
+        SmartPtr()
         {	
             #if USE_THREAD_SAFE_SMARTP
 			m_mutexProtection = new std::recursive_mutex;
@@ -52,7 +52,7 @@ namespace gu
         }
 
         /** The constructor, initialize the reference counter with value 1. */
-        smart_ptr(T* pValue)
+        SmartPtr(T* pValue)
         {
             #if USE_THREAD_SAFE_SMARTP
 			m_mutexProtection = new std::recursive_mutex;
@@ -65,13 +65,13 @@ namespace gu
 
         /**
          * The constructor, that receive also the reference counter.
-         * This is used to copy one smart_ptr to another smart_ptr. 
-         * The new smart_ptr is like a reference to another smart_ptr.
+         * This is used to copy one SmartPtr to another SmartPtr. 
+         * The new SmartPtr is like a reference to another SmartPtr.
          */
 		#if USE_THREAD_SAFE_SMARTP
-        smart_ptr(T* pValue, long* referenceCounter, std::recursive_mutex* mp)
+        SmartPtr(T* pValue, long* referenceCounter, std::recursive_mutex* mp)
 		#else //!USE_THREAD_SAFE_SMARTP
-		smart_ptr(T* pValue, long* referenceCounter)
+		SmartPtr(T* pValue, long* referenceCounter)
 		#endif //USE_THREAD_SAFE_SMARTP
         {
 			#if USE_THREAD_SAFE_SMARTP
@@ -87,7 +87,7 @@ namespace gu
 
 
         /** Copy constructor, increment the reference counter. */
-        smart_ptr(const smart_ptr<T>& sp) 
+        SmartPtr(const SmartPtr<T>& sp) 
         {
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*(sp.m_mutexProtection));
@@ -119,7 +119,7 @@ namespace gu
          * The destructor will decrement the reference counter and destroy the 
          * pointer if reference counter is 0.
          */
-        virtual ~smart_ptr()
+        virtual ~SmartPtr()
         {
 			#if USE_THREAD_SAFE_SMARTP
 			m_mutexProtection->lock();
@@ -147,7 +147,7 @@ namespace gu
         }
 
         /** Assignment operator */
-        smart_ptr<T>& operator = (const smart_ptr<T>& sp)
+        SmartPtr<T>& operator = (const SmartPtr<T>& sp)
         {
             if (this != &sp) // Avoid self assignment
             {
@@ -194,7 +194,7 @@ namespace gu
          * @param sp is the right operator.
          * @return true if m_pData == sp.m_pData and m_referenceCounter == sp.m_referenceCounter
          */
-        inline bool operator==(const smart_ptr<T>& sp) 
+        inline bool operator==(const SmartPtr<T>& sp) 
         {
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
@@ -208,7 +208,7 @@ namespace gu
          * @param sp is the right operator.
          * @return true if m_pData != sp.m_pData or m_referenceCounter != sp.m_referenceCounter
          */
-        inline bool operator!=(const smart_ptr<T>& sp) 
+        inline bool operator!=(const SmartPtr<T>& sp) 
         {
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
@@ -220,13 +220,13 @@ namespace gu
 
         /**
          * Use this to cast the Smart pointer to another type of Smart pointer.
-         * The result will be another type of smart_ptr , but with the same reference counter!
+         * The result will be another type of SmartPtr , but with the same reference counter!
          * The referenceCounter will be increased in the constructor.
          * This is a template!
-         * @return a smpart pointer of type smart_ptr< template argument >
+         * @return a smpart pointer of type SmartPtr< template argument >
          */
         template < typename G >
-        inline smart_ptr<G> DynamicCast()
+        inline SmartPtr<G> DynamicCast()
         {
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
@@ -237,25 +237,25 @@ namespace gu
             if(ptr)
             {
 			    #if USE_THREAD_SAFE_SMARTP
-			    smart_ptr<G> sp(ptr, m_referenceCounter, m_mutexProtection);            
+			    SmartPtr<G> sp(ptr, m_referenceCounter, m_mutexProtection);            
 			    #else //!USE_THREAD_SAFE_SMARTP
-			    smart_ptr<G> sp(ptr, m_referenceCounter);            
+			    SmartPtr<G> sp(ptr, m_referenceCounter);            
 			    #endif //USE_THREAD_SAFE_SMARTP
 
                 return sp;
             }
             else
             {
-                smart_ptr<G> sp(NULL); 
+                SmartPtr<G> sp(NULL); 
                 return sp;
             }
             
         }
 
 
-        /** Specialized Cast that will return smart_ptr<RTTI> */
+        /** Specialized Cast that will return SmartPtr<RTTI> */
         template <>
-        inline smart_ptr<fr::RTTI> DynamicCast<fr::RTTI>()
+        inline SmartPtr<fr::RTTI> DynamicCast<fr::RTTI>()
         {   
 			//this assert is here to generate an compile error !!!!!!
 			//if the object from pointer m_pData does not extent the IRTTI interface 
@@ -264,16 +264,16 @@ namespace gu
 
 			#if USE_THREAD_SAFE_SMARTP
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
-			return smart_ptr<fr::RTTI>((fr::RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
+			return SmartPtr<fr::RTTI>((fr::RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
 			#else //!USE_THREAD_SAFE_SMARTP
-			return smart_ptr<RTTI>((fr::RTTI*)m_pData, m_referenceCounter);
+			return SmartPtr<RTTI>((fr::RTTI*)m_pData, m_referenceCounter);
 			#endif //USE_THREAD_SAFE_SMARTP
         }
 
         /**
-         * Specialized Cast that will return smart_ptr<RTTI>
+         * Specialized Cast that will return SmartPtr<RTTI>
          */
-        inline smart_ptr<fr::RTTI> DynamicCastToSmartRTTI()
+        inline SmartPtr<fr::RTTI> DynamicCastToSmartRTTI()
         {
             return DynamicCast<fr::RTTI>();
         }

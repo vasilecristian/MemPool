@@ -3,18 +3,19 @@
 /************************************************************************/
 #include "InstanceFactory.h"
 
-using namespace gu;
-
-ImplementSingleton(InstanceFactory);
-
-InstanceFactory::InstanceFactory()
+namespace gu
 {
 
-}
+    ImplementSingleton(InstanceFactory);
 
-InstanceFactory::~InstanceFactory()
-{
-    m_abstractUnits.clear();
-}
+    InstanceFactory::InstanceFactory()
+    {
 
+    }
 
+    InstanceFactory::~InstanceFactory()
+    {
+        m_abstractUnits.clear();
+    }
+
+} // namespace gu
