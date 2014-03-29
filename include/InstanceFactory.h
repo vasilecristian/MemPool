@@ -171,7 +171,8 @@ namespace gu
         }
 
         /**
-        * The constructor that accepts the id as parameter.
+        * The constructor that accepts the id as parameter. The typeID will be the key in the map 
+        * associated with a static function.
         * @param is a std::string containing the className (aka the typeID)
         */
         Factoryable(const std::string& typeID)
@@ -199,11 +200,6 @@ namespace gu
     };
 
     
-    /**
-    * Used to create an instance.
-    *
-    * @param params is a void* pointer to the class with parameters.
-    */
     template<class C>
     fastrtti::RTTI* Factoryable<C>::CreateInstance(smart_ptr<FactoryParamsBase> params)
     {
