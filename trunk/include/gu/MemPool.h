@@ -5,8 +5,8 @@
 #ifndef MEMPOOL_BASE_H
 #define MEMPOOL_BASE_H
 
-#include <fast-rtti/RTTI.h>
-#include "Threads.h"
+#include <gu/fast-rtti/RTTI.h>
+#include "gu/Threads.h"
 
 
 using namespace fastrtti;

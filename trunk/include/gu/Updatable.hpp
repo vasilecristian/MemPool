@@ -5,7 +5,7 @@
 #ifndef UPDATABLE_H
 #define UPDATABLE_H
 
-#include <fast-rtti/RTTI.h>
+#include <gu/fast-rtti/RTTI.h>
 using namespace fastrtti;
 
 namespace gu

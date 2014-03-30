@@ -6,10 +6,10 @@
 #define _STATE_H_
 
 #include <list>
-#include "EventReceiver.hpp"
-#include "Updatable.hpp"
-#include "Drawable.hpp"
-#include "MemPool.h"
+#include "gu/EventReceiver.hpp"
+#include "gu/Updatable.hpp"
+#include "gu/Drawable.hpp"
+#include "gu/MemPool.h"
 
 
 namespace gu
