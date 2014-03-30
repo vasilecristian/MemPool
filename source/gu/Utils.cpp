@@ -2,8 +2,8 @@
 /*File created on 09.2012 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
-#include "Utils.h"
-#include "Log.h"
+#include "gu/Utils.h"
+#include "gu/Log.h"
 #include <chrono>
 
 

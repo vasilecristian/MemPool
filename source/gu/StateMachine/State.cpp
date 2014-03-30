@@ -3,8 +3,8 @@
 /************************************************************************/
 
 
-#include "StateMachine/State.h"
-#include "StateMachine/StatesStack.h"
+#include "gu/StateMachine/State.h"
+#include "gu/StateMachine/StatesStack.h"
 
 
 

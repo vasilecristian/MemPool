@@ -1,6 +1,7 @@
-#include "log.h"
 #include <iostream>
-#include "Threads.h"
+
+#include "gu/Log.h"
+#include "gu/Threads.h"
 
 namespace gu
 {

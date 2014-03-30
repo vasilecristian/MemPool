@@ -4,7 +4,7 @@
 
 
 
-#include "MemPool.h"
+#include "gu/MemPool.h"
 //#include "MemLeakDetector.h"
 
 namespace gu
