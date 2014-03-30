@@ -13,87 +13,93 @@
     <Filter Include="source\fast-rtti">
       <UniqueIdentifier>{50e778b0-3c33-4442-ac47-499455717bef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="include\StateMachine">
-      <UniqueIdentifier>{edfae4ac-9978-477b-a2dd-228894acf900}</UniqueIdentifier>
+    <Filter Include="source\gu">
+      <UniqueIdentifier>{817d2ebf-a69e-49ed-9dd3-ce63f2120d9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\StateMachine">
+    <Filter Include="source\gu\StateMachine">
       <UniqueIdentifier>{c4f1bbfb-6f4c-4580-8576-45a5ef50dcb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gu">
+      <UniqueIdentifier>{9517b8a3-f821-4fde-b19f-eac7d2da2d47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\gu\StateMachine">
+      <UniqueIdentifier>{edfae4ac-9978-477b-a2dd-228894acf900}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\include\gu\StateMachine\State.h">
+      <Filter>include\gu\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\StateMachine\StatesStack.h">
+      <Filter>include\gu\StateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Drawable.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\EventBase.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\EventReceiver.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\EventsQueue.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\InstanceFactory.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Log.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\MemPool.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Singleton.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\SmartPtr.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Threads.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Updatable.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\gu\Utils.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\include\fast-rtti\RTTI.h">
       <Filter>include\fast-rtti</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\include\InstanceFactory.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Singleton.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Threads.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Log.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Utils.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\EventReceiver.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\EventsQueue.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\EventBase.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Drawable.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\Updatable.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\SmartPtr.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\MemPool.h">
-      <Filter>include</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\StateMachine\State.h">
-      <Filter>include\StateMachine</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\include\StateMachine\StatesStack.h">
-      <Filter>include\StateMachine</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\source\gu\StateMachine\State.cpp">
+      <Filter>source\gu\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\StateMachine\StatesStack.cpp">
+      <Filter>source\gu\StateMachine</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\EventsQueue.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\InstanceFactory.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\Log.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\MemPool.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\Threads.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\Utils.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\source\fast-rtti\RTTI.cpp">
       <Filter>source\fast-rtti</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\InstanceFactory.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Threads.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Log.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\Utils.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\EventsQueue.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\MemPool.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\StateMachine\State.cpp">
-      <Filter>source\StateMachine</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\source\StateMachine\StatesStack.cpp">
-      <Filter>source\StateMachine</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
 #ifndef EVENTRECEIVER_H
 #define EVENTRECEIVER_H
 
-#include <gu/fast-rtti/RTTI.h>
+#include <fast-rtti/RTTI.h>
 
 
 #include "gu/EventBase.hpp"

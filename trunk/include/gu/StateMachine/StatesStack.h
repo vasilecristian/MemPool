@@ -6,10 +6,10 @@
 #ifndef _MENUSTATES_STACK_H_
 #define _MENUSTATES_STACK_H_
 
-#include "Singleton.hpp"
-#include "Updatable.hpp"
+#include "gu/Singleton.hpp"
+#include "gu/Updatable.hpp"
 //#include "vsge/base/MemLeakDetector.h"
-#include "State.h"
+#include "gu/StateMachine/State.h"
 
 #define STATES_STACK_SIZE	12 
 
