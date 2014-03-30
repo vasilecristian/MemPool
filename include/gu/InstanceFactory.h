@@ -8,7 +8,7 @@
 #include <map>
 #include <sstream>
 
-#include <gu/fast-rtti/RTTI.h>
+#include <fast-rtti/RTTI.h>
 #include "gu/Singleton.hpp"
 #include "gu/SmartPtr.hpp"
 #include "gu/Log.h"

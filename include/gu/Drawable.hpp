@@ -5,7 +5,7 @@
 #ifndef DRAWABLE_H
 #define DRAWABLE_H
 
-#include <gu/fast-rtti/RTTI.h>
+#include <fast-rtti/RTTI.h>
 
 
 using namespace fastrtti;

@@ -19,32 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\Drawable.hpp" />
-    <ClInclude Include="..\..\include\EventBase.hpp" />
-    <ClInclude Include="..\..\include\EventReceiver.hpp" />
-    <ClInclude Include="..\..\include\EventsQueue.h" />
     <ClInclude Include="..\..\include\fast-rtti\RTTI.h" />
-    <ClInclude Include="..\..\include\InstanceFactory.h" />
-    <ClInclude Include="..\..\include\Log.h" />
-    <ClInclude Include="..\..\include\MemPool.h" />
-    <ClInclude Include="..\..\include\Singleton.hpp" />
-    <ClInclude Include="..\..\include\SmartPtr.hpp" />
-    <ClInclude Include="..\..\include\StateMachine\State.h" />
-    <ClInclude Include="..\..\include\StateMachine\StatesStack.h" />
-    <ClInclude Include="..\..\include\Threads.h" />
-    <ClInclude Include="..\..\include\Updatable.hpp" />
-    <ClInclude Include="..\..\include\Utils.h" />
+    <ClInclude Include="..\..\include\gu\Drawable.hpp" />
+    <ClInclude Include="..\..\include\gu\EventBase.hpp" />
+    <ClInclude Include="..\..\include\gu\EventReceiver.hpp" />
+    <ClInclude Include="..\..\include\gu\EventsQueue.h" />
+    <ClInclude Include="..\..\include\gu\InstanceFactory.h" />
+    <ClInclude Include="..\..\include\gu\Log.h" />
+    <ClInclude Include="..\..\include\gu\MemPool.h" />
+    <ClInclude Include="..\..\include\gu\Singleton.hpp" />
+    <ClInclude Include="..\..\include\gu\SmartPtr.hpp" />
+    <ClInclude Include="..\..\include\gu\StateMachine\State.h" />
+    <ClInclude Include="..\..\include\gu\StateMachine\StatesStack.h" />
+    <ClInclude Include="..\..\include\gu\Threads.h" />
+    <ClInclude Include="..\..\include\gu\Updatable.hpp" />
+    <ClInclude Include="..\..\include\gu\Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\EventsQueue.cpp" />
     <ClCompile Include="..\..\source\fast-rtti\RTTI.cpp" />
-    <ClCompile Include="..\..\source\InstanceFactory.cpp" />
-    <ClCompile Include="..\..\source\Log.cpp" />
-    <ClCompile Include="..\..\source\MemPool.cpp" />
-    <ClCompile Include="..\..\source\StateMachine\State.cpp" />
-    <ClCompile Include="..\..\source\StateMachine\StatesStack.cpp" />
-    <ClCompile Include="..\..\source\Threads.cpp" />
-    <ClCompile Include="..\..\source\Utils.cpp" />
+    <ClCompile Include="..\..\source\gu\EventsQueue.cpp" />
+    <ClCompile Include="..\..\source\gu\InstanceFactory.cpp" />
+    <ClCompile Include="..\..\source\gu\Log.cpp" />
+    <ClCompile Include="..\..\source\gu\MemPool.cpp" />
+    <ClCompile Include="..\..\source\gu\StateMachine\State.cpp" />
+    <ClCompile Include="..\..\source\gu\StateMachine\StatesStack.cpp" />
+    <ClCompile Include="..\..\source\gu\Threads.cpp" />
+    <ClCompile Include="..\..\source\gu\Utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{F8ABEDF3-B38E-4161-989E-648282FB50C6}</ProjectGuid>
