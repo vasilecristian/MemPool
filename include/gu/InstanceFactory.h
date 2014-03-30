@@ -8,10 +8,10 @@
 #include <map>
 #include <sstream>
 
-#include <fast-rtti/RTTI.h>
-#include "Singleton.hpp"
-#include "SmartPtr.hpp"
-#include "Log.h"
+#include <gu/fast-rtti/RTTI.h>
+#include "gu/Singleton.hpp"
+#include "gu/SmartPtr.hpp"
+#include "gu/Log.h"
 
 
 
