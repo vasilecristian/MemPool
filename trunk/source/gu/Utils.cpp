@@ -5,6 +5,7 @@
 #include "gu/Utils.h"
 #include "gu/Log.h"
 #include <chrono>
+#include <math.h>
 
 
 namespace gu
@@ -73,7 +74,7 @@ namespace gu
 
 
     
-    unsigned short GetU16(FILE *file, bool isLittleEndian)
+    unsigned short GetU16(FILE */*file*/, bool /*isLittleEndian*/)
     {
         //not implemented yet
         GU_ASSERT(false);

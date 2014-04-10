@@ -58,10 +58,7 @@ namespace gu
         SetConsoleTextAttribute(hConsole,theColour);  // set the text attribute of the previous handle
     }
     #else
-    void LogMgr::ChangeColour(WORD theColour)
-    {
-    
-    }
+
     #endif //_WIN32
 
 

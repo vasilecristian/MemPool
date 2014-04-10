@@ -64,7 +64,7 @@ namespace gu
 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    bool State::OnEvent(EventBase* event)
+    bool State::OnEvent(EventBase* /*event*/)
     { 
         return false; 
     }
@@ -74,7 +74,7 @@ namespace gu
         return false;	
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    void State::Update(int millisFromLastCall)
+    void State::Update(int /*millisFromLastCall*/)
     {
 
     }
