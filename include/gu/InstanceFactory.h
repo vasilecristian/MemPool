@@ -203,7 +203,7 @@ namespace gu
     template<class C>
     fastrtti::RTTI* Factoryable<C>::CreateInstance(SmartPtr<FactoryParamsBase> params)
     {
-        RTTI* returnVal = new C(params);
+        fastrtti::RTTI* returnVal = new C(params);
         return returnVal;
     }
 

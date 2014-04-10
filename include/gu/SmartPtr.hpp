@@ -232,7 +232,12 @@ namespace gu
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
 			#endif //USE_THREAD_SAFE_SMARTP
 
-            G* ptr = fastrtti_dynamic_cast<G>(m_pData);
+            //this assert is here to generate an compile error !!!!!!
+            //if the object from pointer m_pData does not extent the IRTTI interface
+            //a compile error is generated!
+            GU_ASSERT(m_pData->IsRTTI());
+
+            G* ptr = fr::dyna_cast<G>(m_pData);
             GU_ASSERT(ptr != NULL);
             if(ptr)
             {
@@ -252,23 +257,24 @@ namespace gu
             
         }
 
-
+#ifdef _MSC_VER
         /** Specialized Cast that will return SmartPtr<RTTI> */
         template <>
         inline SmartPtr<fr::RTTI> DynamicCast<fr::RTTI>()
-        {   
-			//this assert is here to generate an compile error !!!!!!
-			//if the object from pointer m_pData does not extent the IRTTI interface 
-            //a compile error is generated! 
-			GU_ASSERT(m_pData->IsRTTI());
+        {
+            //this assert is here to generate an compile error !!!!!!
+            //if the object from pointer m_pData does not extent the IRTTI interface
+            //a compile error is generated!
+            GU_ASSERT(m_pData->IsRTTI());
 
-			#if USE_THREAD_SAFE_SMARTP
-			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
-			return SmartPtr<fr::RTTI>((fr::RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
-			#else //!USE_THREAD_SAFE_SMARTP
-			return SmartPtr<RTTI>((fr::RTTI*)m_pData, m_referenceCounter);
-			#endif //USE_THREAD_SAFE_SMARTP
+            #if USE_THREAD_SAFE_SMARTP
+            std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
+            return SmartPtr<fr::RTTI>((fr::RTTI*)m_pData, m_referenceCounter, m_mutexProtection);
+            #else //!USE_THREAD_SAFE_SMARTP
+            return SmartPtr<RTTI>((fr::RTTI*)m_pData, m_referenceCounter);
+            #endif //USE_THREAD_SAFE_SMARTP
         }
+#endif //_MSC_VER
 
         /**
          * Specialized Cast that will return SmartPtr<RTTI>
@@ -327,7 +333,7 @@ namespace gu
 			std::lock_guard<std::recursive_mutex> lock(*m_mutexProtection);
 			#endif //USE_THREAD_SAFE_SMARTP
 
-            return fastrtti_dynamic_cast<U>(m_pData);
+            return fr::dyna_cast<U>(m_pData);
         };
 
     };

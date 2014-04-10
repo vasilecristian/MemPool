@@ -47,11 +47,15 @@ namespace gu
          */
 		static std::recursive_mutex& GetMutex();
 	
+        #ifdef _WIN32
 		/**
          * Used to change the color of the next displayed text in console.
          * @param theColour is the color (values: FOREGROUND_BLUE, FOREGROUND_RED, FOREGROUND_WHITE ...)
          */
         void ChangeColour(WORD theColour);
+        #else
+        #define ChangeColour(...)
+        #endif
 
     public:
 

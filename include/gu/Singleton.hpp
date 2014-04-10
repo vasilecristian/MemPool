@@ -5,7 +5,7 @@
 #ifndef SINGLETON_H
 #define SINGLETON_H
 
-#include "utils.h"
+#include "Utils.h"
 
 
 /////////////////////////////////////////////////////////////
@@ -37,8 +37,8 @@ public:                                                     \
 	}                                                       \
 private:                                                    \
 	static type * s_pInstance;                              \
-    type( const type &obj ){}                               \
-    type & operator=(const type &rhs){ return *this;}       \
+    type( const type &/*obj*/ ){}                           \
+    type & operator=(const type &/*rhs*/){ return *this;}   \
 
 
 
