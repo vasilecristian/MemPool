@@ -18,22 +18,36 @@
 
 namespace gu
 {
+    /**
+     * @brief Class used as base class. This is designed to
+     * be used with InstanceFactory.
+     */
     class FactoryParamsBase
     {  
-        /** The type of the parameter .
-         * This is the name of the class that must be created to use this parameters.
+        /**
+         * @brief The type of the parameter .
+         * This is the name of the class/typename that must be created to use this parameters.
          * Will be used by the InstalceFactory mechanism.
          */
         std::string m_type;
 
     public:
 
-         /**  The Constructor of Params */
+        /**
+         * @brief The constructor.
+         * @param type is a string meaning the type of the parameter.
+         */
         FactoryParamsBase(std::string type):m_type(type) {};
 
-		/** The destructor */
+        /**
+         * @brief The destructor
+         */
         virtual ~FactoryParamsBase(){};
 
+        /**
+         * @brief Getter for the type of this parameter.
+         * @return a string reference to the type.
+         */
         std::string& GetType() { return m_type;}; 
     };
 
@@ -61,12 +75,12 @@ namespace gu
      *                 parameters and their values. This constructor will be used in CreateInstance function.
      * 
      */
-    #define DECLARE_AS_FACTORYABLE(className) \
-                                    public: \
-                                        className(const std::string& typeID):gu::Factoryable< className >(typeID){} \
-                                        className(gu::SmartPtr<gu::FactoryParamsBase> params):m_params(params){}; \
-                                    private: \
-                                        gu::SmartPtr<gu::FactoryParamsBase> m_params; 
+    #define DECLARE_AS_FACTORYABLE(className)                                               \
+            public:                                                                         \
+                className(const std::string& typeID):gu::Factoryable< className >(typeID){} \
+                className(gu::SmartPtr<gu::FactoryParamsBase> params):m_params(params){};   \
+            private:                                                                        \
+                gu::SmartPtr<gu::FactoryParamsBase> m_params;
 
 
 
