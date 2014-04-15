@@ -37,88 +37,88 @@ namespace gu
     public:
 
         /** Initialize the state machine */
-        void		InitStateStack();
+        void InitStateStack();
 
         /** Update the states machine. Change the states, Remove the states and call the Update function for current state */
-	    bool        Update(int millisFromLastCall);
+	    bool Update(int millisFromLastCall);
 
         /** Call the Draw function of the current state */
-        void		Draw();
+        void Draw();
 
         /**
         * Change the state. This is used to jump from a state to another.
         * @param pState is the new state.
         * @param destroyPrevious specify if the old state must be destroyed.
         */
-	    void		ChangeState(State* pState, bool destroyPrevious = true);
+	    void ChangeState(State* pState, bool destroyPrevious = true);
 
         /**
          * Change the state, but add it to the state stuck. Using the PopState this state will be removed from the stack.
          * @param pState is the new state.
          */
-	    void		PushState(State* pState);
+	    void PushState(State* pState);
 
         /**
         * Remove the actual state from stack.
         */
-	    void		PopState(bool bResume = true);
+	    void PopState(bool bResume = true);
 
         /** Remove all states from stack */
-	    void		ClearStateStack();
+	    void ClearStateStack();
 
         /**
         * This will return the current state.
         * @return the current state.
         */
-	    State*  CurrentState();
+	    State* CurrentState();
 
         /** 
         * This will return the previous state.
         * @return the previous state.
         */
-	    State*	PreviousState();
+	    State* PreviousState();
     	
         /** @return the number ofstates from state stack */
-	    inline int  GetStateNo();
+	    inline int GetStateNo();
 
         /** Does nothing right now */
-	    void		ResetTouch();
+	    void ResetTouch();
 
         /** Does nothing right now */
-	    bool		IsStateOnStack(int stateKind) const;
+	    bool IsStateOnStack(int stateKind) const;
 
 
     private:
 
         /** the state that must be pushed to the stack */
-        State*	m_pStatePushed;
+        State* m_pStatePushed;
 
         /** the state that must be popped from stack */
-        State*	m_pStatePoped;
+        State* m_pStatePoped;
 
         /** the table with all active states. This is actually the state stack*/
-	    State*	m_pStateStack[STATES_STACK_SIZE];
+	    State* m_pStateStack[STATES_STACK_SIZE];
 
         /** This the previous state.*/
-	    State*	m_pPreviousState;
+	    State* m_pPreviousState;
 
         /** the current state index in the state stack. */
-	    int			m_nStateIndex;
+	    int	m_nStateIndex;
 
         /** the table with states that must be deleted */
-	    State*	m_pStateStackToDelete[STATES_STACK_SIZE];
+	    State* m_pStateStackToDelete[STATES_STACK_SIZE];
 
         /** the number of states that must be deleted */
-	    int			m_nStateCountToDelete;
+	    int	m_nStateCountToDelete;
 
         /** This will specify that this state must be deleted. The state will be deleted the next
         * time when the Update will be called.
         * @param pState is a pointer to the state that must be deleted.
         */
-	    void		MarkStateToDelete( State* pState );
+	    void MarkStateToDelete( State* pState );
 
         /** Delete all states that was marked to be deleted*/
-	    void		DeleteStatesList();
+	    void DeleteStatesList();
     };
 
 } //namespace vsge

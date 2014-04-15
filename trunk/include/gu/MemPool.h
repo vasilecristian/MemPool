@@ -32,12 +32,9 @@ namespace gu
             Block *pNext;
         };
 
-#if USE_PTHREAD
-        static pthread_mutex_t s_mutexProtect;
-        static pthread_mutexattr_t s_mutexAttr;
-#else
+
         static std::recursive_mutex s_mutexProtect;
-#endif
+
 		
 
 

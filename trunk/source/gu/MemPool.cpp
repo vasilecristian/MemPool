@@ -19,12 +19,9 @@ namespace gu
 
 
 
-    #if USE_PTHREAD
-    pthread_mutex_t vsge::MemPool::s_mutexProtect;
-    pthread_mutexattr_t gu::MemPool::s_mutexAttr;
-    #else
+    
     std::recursive_mutex gu::MemPool::s_mutexProtect;
-    #endif
+
 
 
 
@@ -32,11 +29,7 @@ namespace gu
     {
         if(s_pMemPool == NULL)
         {    
-    #if USE_PTHREAD
-            pthread_mutexattr_init(&s_mutexAttr);
-            pthread_mutexattr_settype(&s_mutexAttr, PTHREAD_MUTEX_RECURSIVE);
-            pthread_mutex_init(&s_mutexProtect, &s_mutexAttr);
-    #endif
+
 
             s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
         
