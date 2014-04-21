@@ -22,7 +22,7 @@ namespace gu
      * @brief Class used as base class. This is designed to
      * be used with InstanceFactory.
      */
-    class FactoryParamsBase
+    class FactoryParamsBase: public  fastrtti::IRTTI< FactoryParamsBase >
     {  
         /**
          * @brief The type of the parameter .
