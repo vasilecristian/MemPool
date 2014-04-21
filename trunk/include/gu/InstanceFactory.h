@@ -24,31 +24,35 @@ namespace gu
      */
     class FactoryParamsBase: public  fastrtti::IRTTI< FactoryParamsBase >
     {  
+    public:
         /**
-         * @brief The type of the parameter .
-         * This is the name of the class/typename that must be created to use this parameters.
+         * This is the name of the class that must be created to use this parameters.
          * Will be used by the InstalceFactory mechanism.
          */
-        std::string m_type;
+        std::string m_classTypeID;
 
-    public:
+
 
         /**
          * @brief The constructor.
          * @param type is a string meaning the type of the parameter.
          */
-        FactoryParamsBase(std::string type):m_type(type) {};
+        FactoryParamsBase(std::string type):m_classTypeID(type) {};
 
         /**
          * @brief The destructor
          */
         virtual ~FactoryParamsBase(){};
 
+        
+
         /**
-         * @brief Getter for the type of this parameter.
-         * @return a string reference to the type.
+         * Get the string with class type ID (aka the name of the class)
+         * The class name is speciffied in xml file. Ex: <Params class="Ship">
+         * This is used in a Class Factory mechanism. 
+         * @return an std::string representing the string with class name
          */
-        std::string& GetType() { return m_type;}; 
+        inline std::string& GetClassTypeID(){return m_classTypeID;};
     };
 
 
@@ -166,7 +170,7 @@ namespace gu
         {
             GU_ASSERT(params.GetPtr() != NULL);
 
-            return CreateInstance(params->GetType(), params);
+            return CreateInstance(params->GetClassTypeID(), params);
         }
 
     };
