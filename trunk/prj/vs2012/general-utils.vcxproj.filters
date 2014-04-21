@@ -72,6 +72,9 @@
     <ClInclude Include="..\..\include\fast-rtti\RTTI.h">
       <Filter>include\fast-rtti</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\gu\SmartPtrQueue.hpp">
+      <Filter>include\gu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\gu\StateMachine\State.cpp">

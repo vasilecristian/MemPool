@@ -29,6 +29,7 @@
     <ClInclude Include="..\..\include\gu\MemPool.h" />
     <ClInclude Include="..\..\include\gu\Singleton.hpp" />
     <ClInclude Include="..\..\include\gu\SmartPtr.hpp" />
+    <ClInclude Include="..\..\include\gu\SmartPtrQueue.hpp" />
     <ClInclude Include="..\..\include\gu\StateMachine\State.h" />
     <ClInclude Include="..\..\include\gu\StateMachine\StatesStack.h" />
     <ClInclude Include="..\..\include\gu\Threads.h" />
