@@ -32,6 +32,10 @@ namespace gu
         std::string m_classTypeID;
 
 
+        /**
+         * @brief The constructor.
+         */
+        FactoryParamsBase():m_classTypeID("") {};
 
         /**
          * @brief The constructor.
