@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\include\fast-rtti\RTTI.h" />
+    <ClInclude Include="..\..\include\fast-rtti\RTTI.hpp" />
     <ClInclude Include="..\..\include\gu\Drawable.hpp" />
     <ClInclude Include="..\..\include\gu\EventBase.hpp" />
     <ClInclude Include="..\..\include\gu\EventReceiver.hpp" />
@@ -37,7 +37,6 @@
     <ClInclude Include="..\..\include\gu\Utils.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\source\fast-rtti\RTTI.cpp" />
     <ClCompile Include="..\..\source\gu\EventsQueue.cpp" />
     <ClCompile Include="..\..\source\gu\InstanceFactory.cpp" />
     <ClCompile Include="..\..\source\gu\Log.cpp" />
