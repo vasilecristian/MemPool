@@ -5,7 +5,7 @@
 #ifndef MEMPOOL_BASE_H
 #define MEMPOOL_BASE_H
 
-#include <fast-rtti/RTTI.h>
+#include <RTTI.hpp>
 #include "gu/Threads.h"
 
 

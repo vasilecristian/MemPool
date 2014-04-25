@@ -5,7 +5,7 @@
 #ifndef EVENTBASE_H
 #define EVENTBASE_H
 
-#include <fast-rtti/RTTI.h>
+#include <RTTI.hpp>
 
 namespace gu
 {

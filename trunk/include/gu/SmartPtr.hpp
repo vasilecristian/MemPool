@@ -5,7 +5,7 @@
 #ifndef SMARTP_BASE_H
 #define SMARTP_BASE_H
 
-#include <fast-rtti/RTTI.h>
+#include <RTTI.hpp>
 
 #include <mutex>
 #include <memory>
