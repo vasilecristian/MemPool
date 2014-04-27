@@ -72,6 +72,9 @@
     <ClInclude Include="..\..\include\fast-rtti\RTTI.hpp">
       <Filter>include\fast-rtti</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\include\gu\MemLeakDetector.h">
+      <Filter>include\gu</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\source\gu\StateMachine\State.cpp">
@@ -96,6 +99,9 @@
       <Filter>source\gu</Filter>
     </ClCompile>
     <ClCompile Include="..\..\source\gu\Utils.cpp">
+      <Filter>source\gu</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\source\gu\MemLeakDetector.cpp">
       <Filter>source\gu</Filter>
     </ClCompile>
   </ItemGroup>

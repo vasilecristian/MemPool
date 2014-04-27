@@ -14,7 +14,11 @@ namespace gu
 
     ImplementSingleton(StatesStack);
 
-    StatesStack::StatesStack()
+    StatesStack::StatesStack(): m_pStatePushed(nullptr)
+                              , m_pStatePoped(nullptr)
+                              , m_pPreviousState(nullptr)
+                              , m_nStateIndex(-1)
+                              , m_nStateCountToDelete(0)
     {
 
     }
@@ -27,14 +31,11 @@ namespace gu
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     void StatesStack::InitStateStack() 
     {
-        m_pStatePushed = NULL; 
-        m_pStatePoped = NULL; 
-        m_nStateIndex = -1; 
-        m_nStateCountToDelete = 0; 
+       
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    void StatesStack::ChangeState(State* pState, bool destroyPrevious)
+    void StatesStack::ChangeState(SmartPtr<State> pState, bool destroyPrevious)
     {
 	    // PopState	
 	    GU_ASSERT(m_nStateIndex >= 0);
@@ -77,9 +78,9 @@ namespace gu
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     bool StatesStack::Update(int millisFromLastCall)
     {
-	    if(m_pStatePoped && (m_nStateIndex >= 0))
+        if(m_pStatePoped.GetPtr() && (m_nStateIndex >= 0))
 	    {
-		    State* pState = m_pStatePoped;
+		    SmartPtr<State> pState = m_pStatePoped;
 		    pState->Pause();
 		    pState->Release();
 
@@ -101,9 +102,9 @@ namespace gu
 		    }
 	    }
 
-	    if(m_pStatePushed)
+        if(m_pStatePushed.GetPtr())
 	    {
-		    State* pState = m_pStatePushed;
+		    SmartPtr<State> pState = m_pStatePushed;
 
 		    //if (CurrentState())
 		    //{
@@ -118,8 +119,8 @@ namespace gu
 		
 		    GU_ASSERT(m_nStateIndex < STATES_STACK_SIZE);
 		
-		    State* oldState = CurrentState();
-		    if (oldState)
+		    SmartPtr<State> oldState = CurrentState();
+            if (oldState.GetPtr())
 			    oldState->Pause();
 
 		    pState->SetParent( CurrentState() );
@@ -168,7 +169,7 @@ namespace gu
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void StatesStack::PushState(State* pState)
+    void StatesStack::PushState(SmartPtr<State> pState)
     {
 	    m_pStatePushed = pState;
     }
@@ -188,7 +189,7 @@ namespace gu
     {
 	    while (m_nStateIndex >= 0)
 	    {
-		    State* pState = m_pStateStack[m_nStateIndex];
+		    SmartPtr<State> pState = m_pStateStack[m_nStateIndex];
 		
 		    pState->Pause();
 		    pState->Release();
@@ -203,7 +204,7 @@ namespace gu
 	    m_pStatePoped = NULL;
     }
 
-    void StatesStack::MarkStateToDelete( State* pState )
+    void StatesStack::MarkStateToDelete(SmartPtr<State> pState )
     {
 	    m_pStateStackToDelete[m_nStateCountToDelete] = pState;
 	    m_nStateCountToDelete++;
@@ -214,10 +215,7 @@ namespace gu
 	    while( m_nStateCountToDelete )
 	    {
 		    m_nStateCountToDelete--;
-		    if( m_pStateStackToDelete[m_nStateCountToDelete] )
-            {
-                delete m_pStateStackToDelete[m_nStateCountToDelete];
-            }
+		    m_pStateStackToDelete[m_nStateCountToDelete] = nullptr;
 	    }
     }
 
@@ -236,7 +234,7 @@ namespace gu
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    State* StatesStack::CurrentState()
+    SmartPtr<State> StatesStack::CurrentState()
     {
 	    return (m_nStateIndex >= 0) ? m_pStateStack[m_nStateIndex] : NULL;
     }
@@ -250,7 +248,7 @@ namespace gu
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    State*	StatesStack::PreviousState() 
+    SmartPtr<State>	StatesStack::PreviousState() 
     { 
         return m_pPreviousState; 
     }

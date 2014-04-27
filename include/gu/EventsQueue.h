@@ -5,9 +5,12 @@
 #ifndef EVENTQUEUE_H
 #define EVENTQUEUE_H
 
+#include <vector>
+#include <gu/SmartPtr.hpp>
+
 #include "Singleton.hpp"
 #include "EventReceiver.hpp"
-#include <vector>
+
 
 namespace gu
 {
@@ -21,10 +24,10 @@ namespace gu
         DeclareSingleton(EventsQueue);
 
         /** The vector that contains the EventReceiver objects. */
-        std::vector<gu::EventReceiver*> m_receiversQ;
+        std::vector< gu::EventReceiver* > m_receiversQ;
 
         /** The vector that contains the Events objects. */
-        std::vector<gu::EventBase*> m_eventsQ;
+        std::vector< gu::SmartPtr <gu::EventBase> > m_eventsQ;
 
     protected:
 
@@ -40,14 +43,16 @@ namespace gu
          * This will add a new event to the list with pending events.
          * This event will be removed from the list after will be processed by the receivers.
          */
-        void AddEvent(gu::EventBase* ev);
+        void AddEvent(gu::SmartPtr<gu::EventBase> ev);
 
+        
         /**
          * This will add a new receiver to the receivers list.
          * @param eventReceiver is a pointer to a new event receiver that need to be added to the list.
          */
         void RegisterEventReceiver(gu::EventReceiver* eventReceiver);
 
+       
         /**
          * This will remove a receiver.
          * @param eventReceiver is a pointer to that event receiver that need to be removed from the list.

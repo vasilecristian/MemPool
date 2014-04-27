@@ -26,6 +26,7 @@
     <ClInclude Include="..\..\include\gu\EventsQueue.h" />
     <ClInclude Include="..\..\include\gu\InstanceFactory.h" />
     <ClInclude Include="..\..\include\gu\Log.h" />
+    <ClInclude Include="..\..\include\gu\MemLeakDetector.h" />
     <ClInclude Include="..\..\include\gu\MemPool.h" />
     <ClInclude Include="..\..\include\gu\Singleton.hpp" />
     <ClInclude Include="..\..\include\gu\SmartPtr.hpp" />
@@ -40,6 +41,7 @@
     <ClCompile Include="..\..\source\gu\EventsQueue.cpp" />
     <ClCompile Include="..\..\source\gu\InstanceFactory.cpp" />
     <ClCompile Include="..\..\source\gu\Log.cpp" />
+    <ClCompile Include="..\..\source\gu\MemLeakDetector.cpp" />
     <ClCompile Include="..\..\source\gu\MemPool.cpp" />
     <ClCompile Include="..\..\source\gu\StateMachine\State.cpp" />
     <ClCompile Include="..\..\source\gu\StateMachine\StatesStack.cpp" />

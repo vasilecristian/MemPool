@@ -8,6 +8,7 @@
 
 #include "gu/Singleton.hpp"
 #include "gu/Updatable.hpp"
+#include "gu/SmartPtr.hpp"
 //#include "vsge/base/MemLeakDetector.h"
 #include "gu/StateMachine/State.h"
 
@@ -50,13 +51,13 @@ namespace gu
         * @param pState is the new state.
         * @param destroyPrevious specify if the old state must be destroyed.
         */
-	    void ChangeState(State* pState, bool destroyPrevious = true);
+	    void ChangeState(gu::SmartPtr<gu::State> pState, bool destroyPrevious = true);
 
         /**
          * Change the state, but add it to the state stuck. Using the PopState this state will be removed from the stack.
          * @param pState is the new state.
          */
-	    void PushState(State* pState);
+	    void PushState(gu::SmartPtr<gu::State> pState);
 
         /**
         * Remove the actual state from stack.
@@ -70,13 +71,13 @@ namespace gu
         * This will return the current state.
         * @return the current state.
         */
-	    State* CurrentState();
+	    gu::SmartPtr<gu::State> CurrentState();
 
         /** 
         * This will return the previous state.
         * @return the previous state.
         */
-	    State* PreviousState();
+	    gu::SmartPtr<gu::State> PreviousState();
     	
         /** @return the number ofstates from state stack */
 	    inline int GetStateNo();
@@ -91,22 +92,22 @@ namespace gu
     private:
 
         /** the state that must be pushed to the stack */
-        State* m_pStatePushed;
+        gu::SmartPtr<gu::State> m_pStatePushed;
 
         /** the state that must be popped from stack */
-        State* m_pStatePoped;
+        gu::SmartPtr<gu::State> m_pStatePoped;
 
         /** the table with all active states. This is actually the state stack*/
-	    State* m_pStateStack[STATES_STACK_SIZE];
+	    gu::SmartPtr<gu::State> m_pStateStack[STATES_STACK_SIZE];
 
         /** This the previous state.*/
-	    State* m_pPreviousState;
+	    gu::SmartPtr<gu::State> m_pPreviousState;
 
         /** the current state index in the state stack. */
 	    int	m_nStateIndex;
 
         /** the table with states that must be deleted */
-	    State* m_pStateStackToDelete[STATES_STACK_SIZE];
+	    gu::SmartPtr<gu::State> m_pStateStackToDelete[STATES_STACK_SIZE];
 
         /** the number of states that must be deleted */
 	    int	m_nStateCountToDelete;
@@ -115,7 +116,7 @@ namespace gu
         * time when the Update will be called.
         * @param pState is a pointer to the state that must be deleted.
         */
-	    void MarkStateToDelete( State* pState );
+	    void MarkStateToDelete( gu::SmartPtr<gu::State> pState );
 
         /** Delete all states that was marked to be deleted*/
 	    void DeleteStatesList();

@@ -71,7 +71,7 @@ namespace gu
          * @param ev is an Engine::EventBase* pointer that store information about event.
          * @return true if the event must be consumed => the event will not be sent to other receivers.
          */
-        virtual bool OnEvent(gu::EventBase* ev) = 0;
+        virtual bool OnEvent(gu::SmartPtr<gu::EventBase> ev) = 0;
     };
 
 } //namespace vsge

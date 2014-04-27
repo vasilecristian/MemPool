@@ -15,20 +15,12 @@ namespace gu
 
     EventsQueue::~EventsQueue()
     {
-        //remove the object and delete them (call the destructor)
-        while (!m_eventsQ.empty()) 
-        {
-            delete (gu::EventBase*)(m_eventsQ.back());  
-            m_eventsQ.pop_back();
-        }
-
-        //remove the object from the list but do not delete them
-        GU_ASSERT(m_receiversQ.size() == 0);
+        m_eventsQ.clear();
         m_receiversQ.clear();
     }
 
  
-    void EventsQueue::AddEvent(gu::EventBase* ev)
+    void EventsQueue::AddEvent(gu::SmartPtr <gu::EventBase> ev)
     {
         m_eventsQ.push_back(ev);
     }
@@ -45,14 +37,16 @@ namespace gu
         m_receiversQ.push_back(eventReceiver);
     }
 
-    void EventsQueue::UnRegisterEventReceiver(gu::EventReceiver* eventReceiver)
+   
+
+    void EventsQueue::UnRegisterEventReceiver(EventReceiver* eventReceiver)
     {
         int size = m_receiversQ.size();
         for(int i=0; i < size; i++)
         {
             if(m_receiversQ[i] == eventReceiver) 
             {
-                m_receiversQ.erase(m_receiversQ.begin() + i);//remove object from the vector but do not delet it
+                m_receiversQ.erase(m_receiversQ.begin() + i);//remove object from the vector
                 return;
             }
         }
@@ -67,33 +61,28 @@ namespace gu
         int sizeE = m_eventsQ.size();
         int sizeR = m_receiversQ.size();
 
-        bool consumeEvent = false;
 
-        for(int i=0; i < sizeR; i++)
+        // For each event 
+        for(int j=0; j < sizeE; j++)
         {
-            if(m_receiversQ[i]->GetCanProcessEvents())
+            // For each receiver
+            for(int i=0; i < sizeR; i++)
             {
-                for(int j=0; j < sizeE; j++)
+                // Check if the receiver can process events
+                if(m_receiversQ[i]->GetCanProcessEvents())
                 {
                     ///if one of the event receivers OnEvent function returns true, the event is not 
-                    ///sent to the rest of the receivers.
-                    consumeEvent = m_receiversQ[i]->OnEvent((EventBase*)m_eventsQ[j]);
-
-                    if(consumeEvent) 
+                    ///sent to the rest of the receivers. 
+                    if(m_receiversQ[i]->OnEvent(m_eventsQ[j]))
+                    {
+                        // So, exit the loop and go to next event.
                         break;
+                    }
                 }
             }
-
-            if(consumeEvent) 
-                break;
         }
     
-    
-    
-        for (int i = 0; i < sizeE; i++)
-        {
-            delete m_eventsQ[i];
-        }
+   
         auto itr = m_eventsQ.begin();
         m_eventsQ.erase(itr, itr + sizeE);
     }

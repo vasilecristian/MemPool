@@ -1,16 +1,18 @@
 #include <iostream>
 
+
+
 #include "gu/Log.h"
 #include "gu/Threads.h"
+
 
 namespace gu
 {
     ImplementSingleton(LogMgr);
-    bool gu::LogMgr::m_initialized = false;
-    std::recursive_mutex gu::LogMgr::s_mutexProtect;
 
 
-    LogMgr::LogMgr()
+
+    LogMgr::LogMgr():m_initialized(false)
     {
 
     }
@@ -30,14 +32,6 @@ namespace gu
     
     }
 
-
-    std::recursive_mutex& LogMgr::GetMutex()
-    {
-        if(!m_initialized)
-            Initialize();
-
-	    return s_mutexProtect;
-    }
 
 
 
@@ -64,7 +58,7 @@ namespace gu
 
     std::string LogMgr::Log(int level, const char* msg)
     {
-        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(gu::LogMgr::GetMutex());
+        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(gu::LogMgr::s_mutexProtect);
 
 	    ThreadID pid = GetThreadID();
 
@@ -112,6 +106,11 @@ namespace gu
         return Log(level, msg.str().c_str());
     }
 
+    std::string LogMgr::Log(int level, const std::string& msg)
+    {
+        return Log(level, msg.c_str());
+    }
+
     std::string LogMgr::LogEX(int level, const char* fileName, int lineNumber, const char* msg)
     {
         std::stringstream ss;
@@ -125,6 +124,15 @@ namespace gu
         ss << fileName << "(" << lineNumber << "): " << msg.str();
         return Log(level, ss.str().c_str());
     }
+
+    std::string LogMgr::LogEX(int level, const char* fileName, int lineNumber, const std::string& msg)
+    {   
+        std::stringstream ss;
+        ss << fileName << "(" << lineNumber << "): " << msg;
+        return Log(level, ss.str().c_str());
+    }
+
+
 
 
 } //namespace gu
