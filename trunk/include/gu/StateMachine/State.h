@@ -21,7 +21,6 @@ namespace gu
                 , public EventReceiver
                 , public Updatable
                 , public Drawable
-                , public virtual IMemPool
     {
     public:
 

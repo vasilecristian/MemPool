@@ -186,13 +186,11 @@ void gu::MemLeakDetector::SetOutputFileName(const string& fileName)
 	MLD_THREAD_LOCK_SCOPE;
     
     gu::MemLeakDetector::s_leaksFilename = fileName;
-    
 }
 
 
 void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const char *fileName, int line) 
 {
-
     if(!m_initialized || !m_started) 
     {
         return;
@@ -219,15 +217,11 @@ void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const ch
     m_totalSize += size;
 
     s_enableByThread[tid] = true;
-
-
 }
 
 
 bool gu::MemLeakDetector::Free( const void* ptr) 
 {
-#if USE_VSGE_MEMORY_LEAK_TRACKER
-
     if(!m_initialized || !m_started) 
     {
         return false;
@@ -296,12 +290,6 @@ bool gu::MemLeakDetector::Free( const void* ptr)
     s_enableByThread[tid] = true;
 
     return removed;
-
-#else
-
-	return false;
-
-#endif //USE_VSGE_MEMORY_LEAK_TRACKER
 }
 
 void gu::MemLeakDetector::SetProfileMessage(const char* msg)
