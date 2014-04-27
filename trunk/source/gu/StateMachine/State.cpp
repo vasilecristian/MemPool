@@ -23,15 +23,15 @@ namespace gu
 	    m_pParent = NULL;
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    State* State::GetParent( int level)
+    SmartPtr<State> State::GetParent( int level)
     {
 	    GU_ASSERT(level >= 0 && level <= STATES_STACK_SIZE);
 
-	    State* parent = m_pParent;
+	    SmartPtr<State> parent = m_pParent;
 
 	    for ( int i = 0 ; i  < level ; i ++ )
 	    {
-		    if (parent->m_pParent)
+            if (parent->m_pParent.GetPtr())
 		    {
 			    parent = parent->m_pParent;
 		    }
@@ -64,7 +64,7 @@ namespace gu
 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    bool State::OnEvent(EventBase* /*event*/)
+    bool State::OnEvent(SmartPtr<EventBase> /*event*/)
     { 
         return false; 
     }
@@ -79,7 +79,7 @@ namespace gu
 
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    void State::SetParent(State* parent)
+    void State::SetParent(SmartPtr<State> parent)
     { 
         m_pParent = parent;
     }

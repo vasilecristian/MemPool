@@ -6,6 +6,7 @@
 #define _STATE_H_
 
 #include <list>
+#include "gu/SmartPtr.hpp"
 #include "gu/EventReceiver.hpp"
 #include "gu/Updatable.hpp"
 #include "gu/Drawable.hpp"
@@ -49,12 +50,12 @@ namespace gu
         virtual void Draw(bool addToDrawList = false, int layerIndex = -1) = 0;                         
     	
         /** this will handle the Events */
-        virtual bool OnEvent(EventBase* event);
+        virtual bool OnEvent(gu::SmartPtr<gu::EventBase> event);
 
         /** This will set the parrent for this state
          * @param parent is a pointer to a State instance that is the parent for this state.
          */
-	    void SetParent(State* parent);
+	    void SetParent(gu::SmartPtr<gu::State> parent);
 
         /** This function will return a pointer to the parent state. Depending of the parameter level, the pointer returned will be 
          * to the parrent of the parrent of the parrent etc...
@@ -62,7 +63,7 @@ namespace gu
          * @param level is an int representing what parent to be returned. 
          * @return a pointer to parent state.
          */
-	    State* GetParent( int level = 0);
+	    gu::SmartPtr<gu::State> GetParent( int level = 0);
 
         /**
          * This function is some how special. Each state must be implement this because this function will
@@ -89,7 +90,7 @@ namespace gu
     private:
 
         /** the parent */
-	    State* m_pParent;
+	    gu::SmartPtr<gu::State> m_pParent;
 
 
     protected:

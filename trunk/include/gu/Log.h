@@ -12,7 +12,7 @@
 
 
 // specific include 
-#include "Singleton.hpp"
+#include "gu/Singleton.hpp"
 
 
 
@@ -32,20 +32,13 @@ namespace gu
 
 		
         /** flag that specify if the class was initialized or not. */ 
-        static bool m_initialized;
+        bool m_initialized;
 
         /** this is used to initialize the class */
-        static void Initialize();
+        void Initialize();
 
         /** protect the write with this mutex */
-        static std::recursive_mutex s_mutexProtect;
-
-        /**
-         * We need to protect the map with this mutex. 
-         * If this will be removed may occur some crashes when multiple threads will use the new and/or delete!
-		 * This function is an workaround , because the static mutex is not created otherwise! probably this is a BUG!
-         */
-		static std::recursive_mutex& GetMutex();
+        std::recursive_mutex s_mutexProtect;
 	
         #ifdef _WIN32
 		/**
@@ -85,6 +78,13 @@ namespace gu
 
         /** used to log a message
          * @param level takes a value from the LOG_LEVEL enum.
+         * @param msg is the message to be shown.
+         * @return the formatted message
+         */
+        std::string Log(int level, const std::string& msg);
+
+        /** used to log a message
+         * @param level takes a value from the LOG_LEVEL enum.
          * @param fileName is the file name of the source file where this message occures.
          * @param lineNumber the line number in the fileName.
          * @param msg is the message to be shown.
@@ -100,6 +100,17 @@ namespace gu
          * @return the formatted message
          */
         std::string LogEX(int level, const char* fileName, int lineNumber, const std::stringstream& msg);
+
+
+        /** used to log a message
+         * @param level takes a value from the LOG_LEVEL enum.
+         * @param fileName is the file name of the source file where this message occures.
+         * @param lineNumber the line number in the fileName.
+         * @param msg is the message to be shown.
+         * @return the formatted message
+         */
+        std::string LogEX(int level, const char* fileName, int lineNumber, const std::string& msg);
+
 
     };
 
