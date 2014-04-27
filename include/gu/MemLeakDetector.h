@@ -81,6 +81,34 @@ namespace gu
      * protected because this is a singleton. Use GetInstance() instead.
      * The file and line number with memory leaks will be printed in a file when the PrintStatus()
      * is called.
+     * How to use it? Take a look at the following example:
+     *
+     * int main(int argc, char *argv[])
+     * {
+     *      MemLeakDetector::Initialize();
+     *      MemLeakDetector::Begin();
+     *      
+     *      // Using it without profile message:
+     *      int* a = NEW int(0);
+     *
+     *      // Using it with profile message
+     *      MemLeakDetector::SetProfileMessage("Test1");
+     *      int* b = NEW int(0);
+     *      MemLeakDetector::ResetProfileMessage();
+     *
+     *      // Using it with scope profile message
+     *      {
+	 *          MemLeakDetector::ScopeProfileMessage scope("Test2");
+	 *          int* c = NEW int(0);
+     *      }
+     *       
+     *      MemLeakDetector::End();
+     *
+     *      // This will print the status
+     *      MemLeakDetector::PrintStatus();
+     *
+     *      return 0;
+     * }
      */
     class MemLeakDetector
     {
