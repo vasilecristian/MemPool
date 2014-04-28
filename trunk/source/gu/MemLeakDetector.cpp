@@ -1,8 +1,15 @@
 /************************************************************************/
 /*File created on 03.2013 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
+
+// Activate it on source file, so the library will contines the functions.
+#define USE_MEMLEAKDETECTOR 1
 #include "gu/MemLeakDetector.h"
 
+#include "gu/Log.h"
+
+
+using namespace std;
 
 /**
  * I must undef the malloc, because i want to use the system malloc
@@ -92,9 +99,9 @@ void gu::Free( void* p )
 
 std::string gu::MemLeakDetector::s_leaksFilename = "MemLeaks.log";
 std::string gu::MemLeakDetector::s_logFilename = "MemOperations.log";
-ofstream* gu::MemLeakDetector::s_log = NULL;
-bool gu::MemLeakDetector::m_initialized = false;
-bool gu::MemLeakDetector::m_started = false;
+
+
+std::atomic<bool> gu::MemLeakDetector::m_started = false;
 map<const void *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
 map<ThreadID, std::string> gu::MemLeakDetector::s_messageByThread;
 std::map<ThreadID, bool> gu::MemLeakDetector::s_enableByThread;
@@ -104,40 +111,17 @@ size_t gu::MemLeakDetector::m_totalSize = 0;
 std::recursive_mutex gu::MemLeakDetector::s_mutexProtect;
 
 
-void gu::MemLeakDetector::Initialize()
-{
-    if(!m_initialized)
-    {
 
-
-        if(s_log == NULL) 
-		    s_log = new ofstream(s_logFilename);
-
-        m_initialized = true;
-    }
-}
 
 void gu::MemLeakDetector::Begin()
 {
     MLD_THREAD_LOCK_SCOPE;
-
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
 
     m_started = true;
 }
 
 void gu::MemLeakDetector::End()
 {
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
     MLD_THREAD_LOCK_SCOPE;
 
     m_started = false;
@@ -147,18 +131,14 @@ void gu::MemLeakDetector::End()
 
 gu::MemLeakDetector::MemLeakDetector()
 {
+    MLD_THREAD_LOCK_SCOPE;
+
     s_memoryMap.clear();
 }
 
 
 gu::MemLeakDetector::~MemLeakDetector() 
 {   
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
 	MLD_THREAD_LOCK_SCOPE;
     
     s_enableByThread[GetThreadID()] = false;
@@ -177,12 +157,6 @@ gu::MemLeakDetector::~MemLeakDetector()
 
 void gu::MemLeakDetector::SetOutputFileName(const string& fileName) 
 {
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
 	MLD_THREAD_LOCK_SCOPE;
     
     gu::MemLeakDetector::s_leaksFilename = fileName;
@@ -191,7 +165,7 @@ void gu::MemLeakDetector::SetOutputFileName(const string& fileName)
 
 void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const char *fileName, int line) 
 {
-    if(!m_initialized || !m_started) 
+    if(!m_started) 
     {
         return;
     }
@@ -212,7 +186,7 @@ void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const ch
     s_enableByThread[tid] = false; 
 
     AllocUnit *unit = new AllocUnit(size, fileName, line, tid, s_messageByThread[tid]);
-	LogAlloc(ptr, unit->m_size, unit->m_line, string(unit->m_fileName));
+	
     s_memoryMap.insert( pair<const void*, gu::MemLeakDetector::AllocUnit*>( ptr, unit ) );
     m_totalSize += size;
 
@@ -222,11 +196,11 @@ void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const ch
 
 bool gu::MemLeakDetector::Free( const void* ptr) 
 {
-    if(!m_initialized || !m_started) 
+    if(!m_started) 
     {
         return false;
     }
-    
+
     MLD_THREAD_LOCK_SCOPE;
 
     ThreadID tid = GetThreadID();
@@ -246,7 +220,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         AllocUnit* unit = s_memoryMap[ ptr ];
         
         s_memoryMap.erase( ptr );
-		LogFree(ptr, unit->m_size, unit->m_line, string(unit->m_fileName));
+		
         m_totalSize -= unit->m_size;
 
         delete unit;
@@ -274,8 +248,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
             if(offset < unit->m_size)
             {
                 s_memoryMap.erase( p );
-				LogFree(p, unit->m_size, unit->m_line, string(unit->m_fileName));
-				LogFree(ptr, unit->m_size, unit->m_line, string(unit->m_fileName));
+				
                 m_totalSize -= unit->m_size;
 
                 delete unit;
@@ -294,50 +267,19 @@ bool gu::MemLeakDetector::Free( const void* ptr)
 
 void gu::MemLeakDetector::SetProfileMessage(const char* msg)
 {
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
     MLD_THREAD_LOCK_SCOPE;
 
     s_messageByThread[GetThreadID()] = std::string(msg);
 }
 
-void gu::MemLeakDetector::ResetProfileMessage()
+void gu::MemLeakDetector::RemoveProfileMessage()
 {
     gu::MemLeakDetector::SetProfileMessage("");
 }
 
-void gu::MemLeakDetector::LogFree(const void* ptr, int size, int line, string& file)
-{
-	*s_log << "FREE: " << ptr << " | Size: " << size << " | file: " << file << "(" << line << ")" << endl;
-	s_log->flush();
-}
-void gu::MemLeakDetector::LogAlloc(const void* ptr, int size, int line, string& file)
-{
-	*s_log << "ALLOC: " << ptr << " | Size: " << size << " | file: " << file << "(" << line << ")" << endl;
-	s_log->flush();
-}
-
-void gu::MemLeakDetector::LogError(string& message)
-{
-    MLD_THREAD_LOCK_SCOPE;
-
-	*s_log << "ERROR: " << message << endl;
-	s_log->flush();
-}
-
-
 void gu::MemLeakDetector::Enable(bool enable)
 {
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
+    
 	MLD_THREAD_LOCK_SCOPE;
 
     s_enableByThread[GetThreadID()] = enable;
@@ -346,14 +288,6 @@ void gu::MemLeakDetector::Enable(bool enable)
 
 void gu::MemLeakDetector::PrintStatus() 
 {
-
-
-    if(!m_initialized) 
-    {
-        LogError(string("MemLeakDetector::Initialize() was not called!"));
-        return;
-    }
-
 	MLD_THREAD_LOCK_SCOPE;
 
     if(s_leaksFilename.size() != 0)

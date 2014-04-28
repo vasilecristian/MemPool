@@ -4,11 +4,16 @@
 #ifndef MEMLEAKDETECTOR_BASE_H
 #define MEMLEAKDETECTOR_BASE_H
 
+#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
+
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <vector>
+#include <string>
+#include <atomic>
 
-#include "gu/Singleton.hpp"
+//#include "gu/Singleton.hpp"
 #include "gu/Threads.h"
 
 #ifdef _MSC_VER
@@ -85,7 +90,6 @@ namespace gu
      *
      * int main(int argc, char *argv[])
      * {
-     *      MemLeakDetector::Initialize();
      *      MemLeakDetector::Begin();
      *      
      *      // Using it without profile message:
@@ -115,8 +119,7 @@ namespace gu
 
     public:
 
-        /** This will initialize the class members. This must be called before Begin(). */
-        static void Initialize();
+
 
         /** This will start the recording. */
         static void Begin();
@@ -130,7 +133,7 @@ namespace gu
          *
          * @param fileName is the file name for the output file.
          */
-        static void SetOutputFileName(const string& fileName);
+        static void SetOutputFileName(const std::string& fileName);
 
 
         /**
@@ -163,7 +166,7 @@ namespace gu
          * This function will set an label for all memory allocation that will occurs from now on 
          * the current thread to "" aka empty string.
          */
-        static void ResetProfileMessage();
+        static void RemoveProfileMessage();
 
         /** Class used to implement the Scope profile manager */
         class ScopeProfileMessage
@@ -173,7 +176,7 @@ namespace gu
             explicit ScopeProfileMessage(const char* msg) { SetProfileMessage(msg); }
 
             /** the destructor */
-            ~ScopeProfileMessage() { ResetProfileMessage(); }
+            ~ScopeProfileMessage() { RemoveProfileMessage(); }
         };
 
 
@@ -198,7 +201,7 @@ namespace gu
 
 
         /**
-         * This is used to profile better the memory allocations. So this map is used to store the some labels 
+         * This is used to profile better the memory allocations. So this map is used to store some labels 
          * for each thread, for some functions or piece of code. The memory leaks log file will record this label for 
          * each leak, so the leak can be identify better.
          */
@@ -209,11 +212,10 @@ namespace gu
          */
         static std::map<ThreadID, bool> s_enableByThread;
 
-        /** Used to specify if class is initialized or not */
-        static bool m_initialized;
+
 
         /** Used to specify if recording is initialized or not */
-        static bool m_started;
+        static std::atomic<bool> m_started;
 
         /**
          * The constructor is protected because this is a singleton.
@@ -244,11 +246,12 @@ namespace gu
                       const char *fileName, 
                       int line, 
                       ThreadID threadID = ThreadID(), 
-                      std::string msg = ""): m_size(size)
-                                           , m_fileName(fileName)
-                                           , m_line(line)
-                                           , m_threadID(threadID)
-                                           , m_msg(msg){}
+                      std::string msg = "")
+                      : m_size(size)
+                      , m_fileName(fileName)
+                      , m_line(line)
+                      , m_threadID(threadID)
+                      , m_msg(msg){}
 
             /** the destructor */
             ~AllocUnit(){}
@@ -275,45 +278,17 @@ namespace gu
          * The filename where the output will be printed.
 		 * This file will contine only the leaks.
          */
-        static string s_leaksFilename;
+        static std::string s_leaksFilename;
 
 
 		/** the filename with all allocation and deallocation occured. */
-        static string s_logFilename;
-
-
-		/** this is the stream used for s_logFilename. */
-		static ofstream* s_log;
-
-		/**
-         * Write to info file about freed memory in the log file.
-		 * @param ptr is a pointer to the allocated memory block.
-		 * @param size is the size of allocated block.
-		 * @param line is the line number in the source file where the free occured.
-		 * @param file is the filename of the source file where the free occured.
-         */
-		static void LogFree(const void* ptr, int size, int line, string& file);
-
-		/**
-         * Write to info file about allocated memory in the log file.
-		 * @param ptr is a pointer to the allocated memory block.
-		 * @param size is the size of allocated block.
-		 * @param line is the line number in the source file where the allocation occured.
-		 * @param file is the filename of the source file where the allocation occured.
-         */
-		static void LogAlloc(const void* ptr, int size, int line, string& file);
-
-        /**
-         * Write to info file a message regarding the internal error occured.
-         * @param message is the error message.
-         */
-        static void LogError(string& message);
+        static std::string s_logFilename;
 
         /**
          * This will store all allocations. Calling NEW an entry will be added. Calling delete that entry will be removed.
          * At a certain point if you have something in map, means that are valid pointers (aka memory leaks)
          */
-        static map<const void *, AllocUnit*> s_memoryMap;
+        static std::map<const void *, AllocUnit*> s_memoryMap;
 
         /** the size in bytes of all the allocated memories */
         static size_t m_totalSize;
@@ -336,6 +311,24 @@ void operator delete[] ( void* p);
 #define	malloc(size) vsge::Malloc(size, __FILE__, __LINE__)
 #define	free(pointer) vsge::Free(pointer)
 
+#define MEMLEAKDETECTOR_BEGIN gu::MemLeakDetector::Begin();
+#define MEMLEAKDETECTOR_END gu::MemLeakDetector::End();
+#define MEMLEAKDETECTOR_PRINT_STATUS gu::MemLeakDetector::PrintStatus();
+#define MEMLEAKDETECTOR_SET_PROFILE_MSG(msg) gu::MemLeakDetector::SetProfileMessage(msg);
+#define MEMLEAKDETECTOR_REMOVE_PROFILE_MSG gu::MemLeakDetector::RemoveProfileMessage();
+#define MEMLEAKDETECTOR_SET_SCOPE_PROFILE_MSG(msg) gu::MemLeakDetector::ScopeProfileMessage scope(msg);
 
+#else //not defined USE_MEMLEAKDETECTOR
+
+#define	NEW new
+
+#define MEMLEAKDETECTOR_BEGIN 
+#define MEMLEAKDETECTOR_END 
+#define MEMLEAKDETECTOR_PRINT_STATUS
+#define MEMLEAKDETECTOR_SET_PROFILE_MSG(msg)
+#define MEMLEAKDETECTOR_REMOVE_PROFILE_MSG
+#define MEMLEAKDETECTOR_SET_SCOPE_PROFILE_MSG(msg)
+
+#endif //USE_MEMLEAKDETECTOR
 
 #endif //MEMLEAKDETECTOR_BASE_H
