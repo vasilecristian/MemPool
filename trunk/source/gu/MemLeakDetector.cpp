@@ -2,7 +2,8 @@
 /*File created on 03.2013 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
-// Activate it on source file, so the library will contines the functions.
+// Activate USE_MEMLEAKDETECTOR on source file, 
+// so the library will have the functions.
 #define USE_MEMLEAKDETECTOR 1
 #include "gu/MemLeakDetector.h"
 
@@ -93,53 +94,46 @@ void gu::Free( void* p )
 }
 
 
-#define MLD_THREAD_LOCK_SCOPE  THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(gu::MemLeakDetector::s_mutexProtect)
+std::string gu::MemLeakDetector::s_leaksFilename = MEMLEAKDETECTOR_LEAKS_FILENAME;
 
+std::atomic<bool> gu::MemLeakDetector::s_started = false;
 
-
-std::string gu::MemLeakDetector::s_leaksFilename = "MemLeaks.log";
-std::string gu::MemLeakDetector::s_logFilename = "MemOperations.log";
-
-
-std::atomic<bool> gu::MemLeakDetector::m_started = false;
 map<const void *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
-map<ThreadID, std::string> gu::MemLeakDetector::s_messageByThread;
-std::map<ThreadID, bool> gu::MemLeakDetector::s_enableByThread;
-size_t gu::MemLeakDetector::m_totalSize = 0;
 
+map<ThreadID, std::string> gu::MemLeakDetector::s_messageByThread;
+
+std::map<ThreadID, bool> gu::MemLeakDetector::s_enableByThread;
+
+size_t gu::MemLeakDetector::s_totalSize = 0;
 
 std::recursive_mutex gu::MemLeakDetector::s_mutexProtect;
 
 
-
-
 void gu::MemLeakDetector::Begin()
 {
-    MLD_THREAD_LOCK_SCOPE;
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
-    m_started = true;
+    s_started = true;
 }
 
 void gu::MemLeakDetector::End()
 {
-    MLD_THREAD_LOCK_SCOPE;
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
-    m_started = false;
+    s_started = false;
 }
-
 
 
 gu::MemLeakDetector::MemLeakDetector()
 {
-    MLD_THREAD_LOCK_SCOPE;
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
     s_memoryMap.clear();
 }
 
-
 gu::MemLeakDetector::~MemLeakDetector() 
 {   
-	MLD_THREAD_LOCK_SCOPE;
+	std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
     
     s_enableByThread[GetThreadID()] = false;
 
@@ -150,14 +144,14 @@ gu::MemLeakDetector::~MemLeakDetector()
     }
 
     s_memoryMap.clear();
-    m_totalSize = 0;
+    s_totalSize = 0;
 }
 
 
 
 void gu::MemLeakDetector::SetOutputFileName(const string& fileName) 
 {
-	MLD_THREAD_LOCK_SCOPE;
+	std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
     
     gu::MemLeakDetector::s_leaksFilename = fileName;
 }
@@ -165,43 +159,51 @@ void gu::MemLeakDetector::SetOutputFileName(const string& fileName)
 
 void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const char *fileName, int line) 
 {
-    if(!m_started) 
-    {
-        return;
-    }
+    // Check if the leak detector was started. If not, then return.
+    if(!s_started) return;
+    
+    // Protect it for multithread access.
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
-    MLD_THREAD_LOCK_SCOPE;
-
+    // Get the thread id, that is used to check if 
+    // leak detection was disable for this thread.
     ThreadID tid = GetThreadID();
 
+    // Check if this thread was added to the map. 
+    // If not then add it.
+    // If is added, then check if the leak detection was disabled 
+    // for it.
     if(s_enableByThread.find(tid) == s_enableByThread.cend())
-    {
         s_enableByThread[tid] = true;
-    }
     else if(!s_enableByThread[tid])
         return;
     
-
-    /// Stop the allocation recording(only for this thread) for internal new 
+    // Disable the leack detection for all internal 
+    // allocations for this thread.
     s_enableByThread[tid] = false; 
 
+    // Create the allocation unit with info about size, filename, line, thread id, etc...
     AllocUnit *unit = new AllocUnit(size, fileName, line, tid, s_messageByThread[tid]);
 	
+    // Insert the allocation unit in to the map
     s_memoryMap.insert( pair<const void*, gu::MemLeakDetector::AllocUnit*>( ptr, unit ) );
-    m_totalSize += size;
 
+    // Increment the total allocated size
+    s_totalSize += size;
+
+    // Enable the leack detection for this thread.
     s_enableByThread[tid] = true;
 }
 
 
 bool gu::MemLeakDetector::Free( const void* ptr) 
 {
-    if(!m_started) 
+    if(!s_started) 
     {
         return false;
     }
 
-    MLD_THREAD_LOCK_SCOPE;
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
     ThreadID tid = GetThreadID();
 
@@ -210,7 +212,9 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         s_enableByThread[tid] = true;
     }
     else if(!s_enableByThread[tid])
+    {
         return false;
+    }
 
     bool removed = false;
 
@@ -221,7 +225,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         
         s_memoryMap.erase( ptr );
 		
-        m_totalSize -= unit->m_size;
+        s_totalSize -= unit->m_size;
 
         delete unit;
         removed = true;
@@ -249,7 +253,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
             {
                 s_memoryMap.erase( p );
 				
-                m_totalSize -= unit->m_size;
+                s_totalSize -= unit->m_size;
 
                 delete unit;
                 removed = true;
@@ -267,7 +271,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
 
 void gu::MemLeakDetector::SetProfileMessage(const char* msg)
 {
-    MLD_THREAD_LOCK_SCOPE;
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
     s_messageByThread[GetThreadID()] = std::string(msg);
 }
@@ -279,8 +283,7 @@ void gu::MemLeakDetector::RemoveProfileMessage()
 
 void gu::MemLeakDetector::Enable(bool enable)
 {
-    
-	MLD_THREAD_LOCK_SCOPE;
+	std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
     s_enableByThread[GetThreadID()] = enable;
 }
@@ -288,7 +291,7 @@ void gu::MemLeakDetector::Enable(bool enable)
 
 void gu::MemLeakDetector::PrintStatus() 
 {
-	MLD_THREAD_LOCK_SCOPE;
+	std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
 
     if(s_leaksFilename.size() != 0)
     {   
@@ -298,7 +301,7 @@ void gu::MemLeakDetector::PrintStatus()
         if(out.is_open())
         {        
             out << "Total Number of Pointers: " << s_memoryMap.size() << endl;
-            out << "Total Size Allocated: " << m_totalSize << endl;
+            out << "Total Size Allocated: " << s_totalSize << endl;
             
             out << endl << endl;
             

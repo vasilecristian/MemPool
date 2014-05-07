@@ -36,7 +36,7 @@ namespace gu
             if(s_pMemPool != NULL)
             {
 
-                THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(s_mutexProtect);
+                std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
                 memset(s_pMemPool, 0, s_ulPoolSize);
 
@@ -69,7 +69,8 @@ namespace gu
 
     void MemPool::DeInitPool()
     {
-        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(s_mutexProtect);
+        std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
+
         free(s_pMemPool);
     
     }
@@ -87,7 +88,7 @@ namespace gu
 
     void* MemPool::Alloc(unsigned long ulSize, bool bUseMemPool)
     {
-        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(s_mutexProtect);
+        std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
         MemPool::InitPool();
 
@@ -124,7 +125,8 @@ namespace gu
 
     void MemPool::Free( void* p )
     {
-        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(s_mutexProtect);
+        std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
+
 
         if( (s_pMemPool < p) && (p < (void*)((char*)s_pMemPool + s_ulPoolSize)))
         {
