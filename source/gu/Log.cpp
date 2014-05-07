@@ -58,7 +58,7 @@ namespace gu
 
     std::string LogMgr::Log(int level, const char* msg)
     {
-        THREAD_MUTEX_RECURSIVE_LOCK_SCOPE(gu::LogMgr::s_mutexProtect);
+        std::lock_guard<std::recursive_mutex> lock(gu::LogMgr::s_mutexProtect);
 
 	    ThreadID pid = GetThreadID();
 
