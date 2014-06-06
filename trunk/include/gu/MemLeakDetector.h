@@ -13,6 +13,7 @@
 #include <string>
 #include <atomic>
 #include <mutex>
+#include <cstring>
 #include "gu/Threads.h"
 
 #ifdef _MSC_VER
