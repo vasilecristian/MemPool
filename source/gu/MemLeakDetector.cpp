@@ -42,7 +42,7 @@ void operator delete( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 };
-void operator delete( void* p)
+void operator delete( void* p) noexcept
 { 
     gu::Free(p); 
 };
@@ -60,7 +60,7 @@ void operator delete[] ( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 };
-void operator delete[] ( void* p)
+void operator delete[] ( void* p) noexcept
 {
     gu::Free(p); 
 };
@@ -96,7 +96,7 @@ void gu::Free( void* p )
 
 std::string gu::MemLeakDetector::s_leaksFilename = MEMLEAKDETECTOR_LEAKS_FILENAME;
 
-std::atomic<bool> gu::MemLeakDetector::s_started = false;
+std::atomic<bool> gu::MemLeakDetector::s_started(false);
 
 map<const void *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
 

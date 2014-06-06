@@ -8,6 +8,7 @@ QT       -= core gui
 
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_CXXFLAGS -= -fexceptions
 QMAKE_CXXFLAGS_RELEASE -= -O2
 QMAKE_CXXFLAGS_RELEASE += -O3
 QMAKE_CXXFLAGS_RELEASE += -m64
@@ -36,10 +37,11 @@ HEADERS += \
     ../../include/gu/EventsQueue.h \
     ../../include/gu/EventReceiver.hpp \
     ../../include/gu/EventBase.hpp \
-    ../../include/gu/Drawable.hpp
+    ../../include/gu/Drawable.hpp \
+    ../../include/gu/MemLeakDetector.h \
+    ../../include/gu/SmartPtrQueue.hpp
 
 SOURCES += \
-    ../../source/fast-rtti/RTTI.cpp \
     ../../source/gu/StateMachine/StatesStack.cpp \
     ../../source/gu/StateMachine/State.cpp \
     ../../source/gu/Utils.cpp \
@@ -47,4 +49,5 @@ SOURCES += \
     ../../source/gu/MemPool.cpp \
     ../../source/gu/Log.cpp \
     ../../source/gu/InstanceFactory.cpp \
-    ../../source/gu/EventsQueue.cpp
+    ../../source/gu/EventsQueue.cpp \
+    ../../source/gu/MemLeakDetector.cpp
