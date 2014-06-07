@@ -207,6 +207,15 @@ namespace gu
     unsigned int millisSinceLastCall();
 
 
+    template<typename T>
+    std::string ToString(T val)
+    {
+        std::ostringstream s;
+        s << val;
+        return s.str();
+    }
+
+
 } //namespace gu
 
 
