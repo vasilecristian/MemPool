@@ -7,6 +7,8 @@
 
 #include <vector>
 #include <string>
+#include <ostream>
+#include <sstream>
 
 #ifdef _WIN32
 #include <math.h>
@@ -91,7 +93,7 @@ namespace gu
      * @param line is the line number where the assert occured.
      * @return false if the assertion does not occured.
      */
-    bool VsgeAssert(bool x, const char *msg, char* file, unsigned int line);
+    bool GUAssert(bool x, const char *msg, char* file, unsigned int line);
 
     /** Swtch the values */
     template<class T> void SwitchValue(T &a, T &b)
@@ -165,7 +167,7 @@ namespace gu
    
     /** this is a helper macro for ASSERT */
     #if defined(DEBUG) || defined(_DEBUG)
-    #define GU_ASSERT(to_check) gu::VsgeAssert (to_check, #to_check, __FILE__, __LINE__ )
+    #define GU_ASSERT(to_check) gu::GUAssert (to_check, #to_check, __FILE__, __LINE__ )
     #else
     #define GU_ASSERT(to_check) ;
     #endif

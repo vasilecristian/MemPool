@@ -127,7 +127,7 @@ namespace gu
         return degrees;
     }
 
-    bool VsgeAssert(bool x, const char *msg, char* file, unsigned int line)
+    bool GUAssert(bool x, const char *msg, char* file, unsigned int line)
     {
         if( false == x)
         {  

@@ -302,8 +302,8 @@ void operator delete[] ( void* p);
 
 
 #define	NEW new(__FILE__, __LINE__)  
-#define	malloc(size) vsge::Malloc(size, __FILE__, __LINE__)
-#define	free(pointer) vsge::Free(pointer)
+#define	malloc(size) gu::Malloc(size, __FILE__, __LINE__)
+#define	free(pointer) gu::Free(pointer)
 
 #define MEMLEAKDETECTOR_BEGIN                       gu::MemLeakDetector::Begin();
 #define MEMLEAKDETECTOR_END                         gu::MemLeakDetector::End();
