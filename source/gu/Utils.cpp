@@ -150,7 +150,7 @@ namespace gu
         }
     }
 
-    unsigned int millisSinceLastCall()
+    unsigned int MillisSinceLastCall()
     {
         // lastCall 
         static std::chrono::time_point<std::chrono::system_clock> lastCall = std::chrono::system_clock::now();
