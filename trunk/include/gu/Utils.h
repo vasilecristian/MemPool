@@ -206,7 +206,7 @@ namespace gu
 	}
 
 
-    unsigned int millisSinceLastCall();
+    unsigned int MillisSinceLastCall();
 
 
     template<typename T>
