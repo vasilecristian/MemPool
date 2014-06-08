@@ -199,6 +199,6 @@ namespace gu
     };
 
 
-} //namespace vsge
+} //namespace gu
 
 #endif //SMARTPQUEUE_H

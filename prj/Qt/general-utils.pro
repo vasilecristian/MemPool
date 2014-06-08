@@ -39,7 +39,8 @@ HEADERS += \
     ../../include/gu/EventBase.hpp \
     ../../include/gu/Drawable.hpp \
     ../../include/gu/MemLeakDetector.h \
-    ../../include/gu/SmartPtrQueue.hpp
+    ../../include/gu/SmartPtrQueue.hpp \
+    ../../include/fast-rtti/RTTI.hpp
 
 SOURCES += \
     ../../source/gu/StateMachine/StatesStack.cpp \

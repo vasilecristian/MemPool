@@ -9,6 +9,7 @@
 
 
 #include "gu/EventBase.hpp"
+#include "gu/SmartPtr.hpp"
 
 using namespace fastrtti;
 
@@ -74,7 +75,7 @@ namespace gu
         virtual bool OnEvent(gu::SmartPtr<gu::EventBase> ev) = 0;
     };
 
-} //namespace vsge
+} //namespace gu
 
 
 #endif //EVENTRECEIVER_H
