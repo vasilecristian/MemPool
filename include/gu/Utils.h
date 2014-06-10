@@ -168,8 +168,10 @@ namespace gu
     /** this is a helper macro for ASSERT */
     #if defined(DEBUG) || defined(_DEBUG)
     #define GU_ASSERT(to_check) gu::GUAssert (to_check, #to_check, __FILE__, __LINE__ )
+    #define GU_ASSERT_MSG(to_check, msg) gu::GUAssert (to_check, msg, __FILE__, __LINE__ )
     #else
     #define GU_ASSERT(to_check) ;
+    #define GU_ASSERT_MSG(to_check, msg) ;
     #endif
 
 

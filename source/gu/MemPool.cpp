@@ -184,7 +184,7 @@ namespace gu
 
 
 
-    void* IMemPool::operator new( size_t size, const char *file, int line ) 
+    void* IMemPool::operator new( size_t size, const char *file, int line )
     { 
         void *p = MemPool::Alloc(size);
 

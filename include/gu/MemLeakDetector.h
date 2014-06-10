@@ -4,7 +4,7 @@
 #ifndef MEMLEAKDETECTOR_BASE_H
 #define MEMLEAKDETECTOR_BASE_H
 
-#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
+
 
 #include <iostream>
 #include <fstream>
@@ -33,9 +33,9 @@ namespace gu
 #if (USE_CUSTOM_ALLOCATORS)
     void* Allocator( std::size_t size);
 #else //USE_CUSTOM_ALLOCATORS
-	inline void* Allocator( std::size_t size)
+    inline void* Allocator( std::size_t size, bool corruptionCheck = false)
 	{
-		void* p = malloc(size);
+        void* p = malloc(size);
 
 		if(!p)
 			return NULL;
@@ -43,7 +43,7 @@ namespace gu
 		memset(p, 0, size);
 
 		return p;
-	};
+    }
 #endif //USE_CUSTOM_ALLOCATORS
 
 
@@ -193,6 +193,19 @@ namespace gu
         /** Print to the output file the content of map. */
         static void PrintStatus();
 
+        /** Use this to activate the corruption check
+         * This must be used only at the beginning.
+         */
+        static void EnableCorruptionCheck();
+
+        /**
+         * @brief Return true if the corruptioncheck was enabled.
+         */
+        static bool IsCorruptionCheckEnabled();
+
+
+        static void CorruptionCheck();
+
     protected:
 
         /** The mutex that will protect the static functions for multithreading access.*/
@@ -214,6 +227,9 @@ namespace gu
 
         /** Used to specify if recording is initialized or not */
         static std::atomic<bool> s_started;
+
+        /** This is used to activate the corruption check */
+        static std::atomic<bool> s_corruptionCheck;
 
         /**
          * The constructor is protected because all members are static functions.
@@ -239,7 +255,7 @@ namespace gu
         public:
 
             /** the constructor */
-            AllocUnit(size_t size, 
+            AllocUnit(size_t size,
                       const char *fileName, 
                       int line, 
                       ThreadID threadID = ThreadID(), 
@@ -301,6 +317,13 @@ void operator delete[] ( void* p, const char *file, int line) ;
 void operator delete[] ( void* p);
 
 
+#if !defined(MEMLEAKDETECTOR_LEAKS_FILENAME)
+#define MEMLEAKDETECTOR_LEAKS_FILENAME              "MemLeaks.log"
+#endif //MEMLEAKDETECTOR_LEAKS_FILENAME
+
+
+#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
+
 #define	NEW new(__FILE__, __LINE__)  
 #define	malloc(size) gu::Malloc(size, __FILE__, __LINE__)
 #define	free(pointer) gu::Free(pointer)
@@ -312,10 +335,8 @@ void operator delete[] ( void* p);
 #define MEMLEAKDETECTOR_REMOVE_PROFILE_MSG          gu::MemLeakDetector::RemoveProfileMessage();
 #define MEMLEAKDETECTOR_SET_SCOPE_PROFILE_MSG(msg)  gu::MemLeakDetector::ScopeProfileMessage scope(msg);
 
-#if !defined(MEMLEAKDETECTOR_LEAKS_FILENAME)
-#define MEMLEAKDETECTOR_LEAKS_FILENAME              "MemLeaks.log"
-#endif //MEMLEAKDETECTOR_LEAKS_FILENAME
-
+#define MEMLEAKDETECTOR_CORRUPTION_CHECK_ENABLE     gu::MemLeakDetector::EnableCorruptionCheck();
+#define MEMLEAKDETECTOR_CORRUPTION_CHECK            gu::MemLeakDetector::CorruptionCheck();
 
 #else //not defined USE_MEMLEAKDETECTOR
 
@@ -327,6 +348,9 @@ void operator delete[] ( void* p);
 #define MEMLEAKDETECTOR_SET_PROFILE_MSG(msg)
 #define MEMLEAKDETECTOR_REMOVE_PROFILE_MSG
 #define MEMLEAKDETECTOR_SET_SCOPE_PROFILE_MSG(msg)
+
+#define MEMLEAKDETECTOR_CORRUPTION_CHECK_ENABLE
+#define MEMLEAKDETECTOR_CORRUPTION_CHECK
 
 #endif //USE_MEMLEAKDETECTOR
 

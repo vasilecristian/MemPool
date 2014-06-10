@@ -131,7 +131,7 @@ namespace gu
                 delete m_pData;
                 m_pData = nullptr;
                 delete m_referenceCounter;
-                m_referenceCounter = nullptr;
+                m_referenceCounter = NULL;
 
 				#if USE_THREAD_SAFE_SMARTP
 				m_mutexProtection->unlock();
