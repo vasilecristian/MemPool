@@ -4,9 +4,9 @@
 
 // Activate USE_MEMLEAKDETECTOR on source file, 
 // so the library will have the functions.
-#define USE_MEMLEAKDETECTOR 1
-#include "gu/MemLeakDetector.h"
 
+#include "gu/MemLeakDetector.h"
+#include "gu/Utils.h"
 #include "gu/Log.h"
 
 
@@ -37,15 +37,15 @@ using namespace std;
 void* operator new( size_t size, const char *file, int line ) 
 { 
     return gu::Malloc(size, file, line); 
-};
+}
 void operator delete( void* p, const char *file, int line) 
 { 
     gu::Free(p); 
-};
+}
 void operator delete( void* p) noexcept
 { 
     gu::Free(p); 
-};
+}
 
 
 //void* operator new[](size_t size) 
@@ -59,21 +59,26 @@ void* operator new[]( size_t size, const char *file, int line )
 void operator delete[] ( void* p, const char *file, int line) 
 { 
     gu::Free(p); 
-};
+}
 void operator delete[] ( void* p) noexcept
 {
     gu::Free(p); 
-};
+}
 
 
 
-
+#define VALUE_TO_DETECT 1
 void* gu::Malloc( std::size_t size, const char *file, int line )
 {
 	if(size == 0) 
         return NULL;	
 
-	void* p = Allocator(size);
+    void* p = Allocator(size + (gu::MemLeakDetector::IsCorruptionCheckEnabled() ? size : 0) );
+
+    if(gu::MemLeakDetector::IsCorruptionCheckEnabled())
+    {
+        memset(p + size, VALUE_TO_DETECT, size);
+    }
 
 	if(!p) 
 		return NULL;
@@ -98,6 +103,8 @@ std::string gu::MemLeakDetector::s_leaksFilename = MEMLEAKDETECTOR_LEAKS_FILENAM
 
 std::atomic<bool> gu::MemLeakDetector::s_started(false);
 
+std::atomic<bool> gu::MemLeakDetector::s_corruptionCheck(false);
+
 map<const void *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
 
 map<ThreadID, std::string> gu::MemLeakDetector::s_messageByThread;
@@ -111,16 +118,22 @@ std::recursive_mutex gu::MemLeakDetector::s_mutexProtect;
 
 void gu::MemLeakDetector::Begin()
 {
-    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
-
     s_started = true;
 }
 
 void gu::MemLeakDetector::End()
 {
-    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
-
     s_started = false;
+}
+
+void gu::MemLeakDetector::EnableCorruptionCheck()
+{
+    s_corruptionCheck= true;
+}
+
+bool gu::MemLeakDetector::IsCorruptionCheckEnabled()
+{
+    return s_corruptionCheck;
 }
 
 
@@ -216,6 +229,8 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         return false;
     }
 
+    if(s_memoryMap.size() == 0) return false;
+
     bool removed = false;
 
     s_enableByThread[tid] = false;
@@ -245,11 +260,18 @@ bool gu::MemLeakDetector::Free( const void* ptr)
             const void* p = (*it).first;
             AllocUnit* unit = (*it).second;
 
+            bool found = false;
+            if(ptr == p)
+                found = true;
+            else
+            {
+                char* pc = (char*)p;
+                char* ptrc = (char*)ptr;
+                unsigned int offset = (ptrc - pc);
+                if(offset < unit->m_size) found = true;
+            }
 
-            char* pc = (char*)p;
-            char* ptrc = (char*)ptr;
-            unsigned int offset = (ptrc - pc);
-            if(offset < unit->m_size)
+            if(found)
             {
                 s_memoryMap.erase( p );
 				
@@ -319,5 +341,41 @@ void gu::MemLeakDetector::PrintStatus()
         }
     }
 
+}
+
+void gu::MemLeakDetector::CorruptionCheck()
+{
+    if(!s_corruptionCheck) return;
+
+    std::lock_guard<std::recursive_mutex> lock(gu::MemLeakDetector::s_mutexProtect);
+
+    if(s_leaksFilename.size() != 0)
+    {
+
+        for( auto it = s_memoryMap.begin(); it != s_memoryMap.end(); it++ )
+        {
+            gu::MemLeakDetector::AllocUnit* unit =  (gu::MemLeakDetector::AllocUnit*)it->second;
+
+            if(unit)
+            {
+                for(int i = 0; i<unit->m_size; i++)
+                {
+                    void* ptr = (void*)it->first + unit->m_size + i;
+                    if((*((char*)ptr)) != VALUE_TO_DETECT)
+                    {
+                        std::stringstream ss;
+                        ss << "Memory corruption at Address: " << ptr
+                           << " variable declared in file: "
+                           << unit->m_fileName
+                           << "(" << unit->m_line << ")";
+                        gu::GUAssert (false, ss.str().c_str(), (char*)unit->m_fileName, unit->m_line );
+
+                    }
+                }
+            }
+
+        }
+
+    }
 }
 

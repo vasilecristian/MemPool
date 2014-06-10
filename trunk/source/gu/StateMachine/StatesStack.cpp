@@ -24,6 +24,10 @@ namespace gu
     }
     StatesStack::~StatesStack()
     {
+        //m_pStatePushed = nullptr;
+        //m_pStatePoped = nullptr;
+        m_pPreviousState = nullptr;
+
         ClearStateStack();
         DeleteStatesList();
     }
@@ -176,7 +180,7 @@ namespace gu
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    void StatesStack::PopState(bool bResume)
+    void StatesStack::PopState(bool /*bResume*/)
     {
 	    if(m_nStateIndex < 0) return;
 
@@ -221,7 +225,7 @@ namespace gu
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    bool StatesStack::IsStateOnStack(int stateKind) const
+    bool StatesStack::IsStateOnStack(int /*stateKind*/) const
     {/*
 	    for (int i = 0; i < _nStateIndex; i++)
 	    {

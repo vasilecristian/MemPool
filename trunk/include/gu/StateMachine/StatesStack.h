@@ -62,7 +62,7 @@ namespace gu
         /**
         * Remove the actual state from stack.
         */
-	    void PopState(bool bResume = true);
+        void PopState(bool = true);
 
         /** Remove all states from stack */
 	    void ClearStateStack();
@@ -86,7 +86,7 @@ namespace gu
 	    void ResetTouch();
 
         /** Does nothing right now */
-	    bool IsStateOnStack(int stateKind) const;
+        bool IsStateOnStack(int) const;
 
 
     private:
