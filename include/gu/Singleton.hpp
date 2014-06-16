@@ -16,7 +16,7 @@
 public:                                                     \
 	inline static void CreateInstance()						\
 	{														\
-		GU_ASSERT( type::s_pInstance == NULL);            \
+        GU_ASSERT( type::s_pInstance == NULL);              \
         if(type::s_pInstance == NULL)                       \
         {                                                   \
             type::s_pInstance = new type();                 \
