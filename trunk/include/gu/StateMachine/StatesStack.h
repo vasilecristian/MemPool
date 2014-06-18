@@ -41,7 +41,7 @@ namespace gu
         void InitStateStack();
 
         /** Update the states machine. Change the states, Remove the states and call the Update function for current state */
-	    bool Update(int millisFromLastCall);
+	    bool Update(int microsecondsSinceLastCall);
 
         /** Call the Draw function of the current state */
         void Draw();

@@ -38,7 +38,7 @@ public:                                                     \
 private:                                                    \
 	static type * s_pInstance;                              \
     type( const type &/*obj*/ ){}                           \
-    type & operator=(const type &/*rhs*/){ return *this;}   \
+    type & operator=(const type &/*rhs*/){ return *this;}
 
 
 
@@ -46,7 +46,7 @@ private:                                                    \
  * Standard declaration for a singletone 
  */
 #define ImplementSingleton(type)                            \
-	type * type::s_pInstance = 0;                           \
+    type * type::s_pInstance = 0;
 
 /////////////////////////////////////////////////////////////
 
@@ -70,7 +70,7 @@ public:                                                     \
     {                                                       \
         if(type::s_pInstance == NULL)                       \
         {                                                   \
-            GU_ASSERT(type::s_pInstance != NULL);         \
+            GU_ASSERT(type::s_pInstance != NULL);           \
         }                                                   \
         return type::s_pInstance;                           \
     }                                                       \
@@ -82,7 +82,7 @@ public:                                                     \
     type( const type &obj ){}                               \
     type & operator=(const type &rhs){ return *this;}       \
 protected:                                                  \
-    static type * s_pInstance;                              \
+    static type * s_pInstance;
     
 
 
@@ -92,7 +92,7 @@ protected:                                                  \
  * Do not use it on other classes.
  */
 #define ImplementSingleton_BaseDriver(type)                 \
-    type * type::s_pInstance = 0;                           \
+    type * type::s_pInstance = 0;
 
 
 /**
@@ -112,7 +112,7 @@ public:                                                     \
         return s_pInstance;                                 \
     }                                                       \
     type( const type &obj ){}                               \
-    type & operator=(const type &rhs){ return *this;}       \
+    type & operator=(const type &rhs){ return *this;}
 
 /////////////////////////////////////////////////////////////
 

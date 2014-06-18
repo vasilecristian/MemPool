@@ -43,9 +43,9 @@ namespace gu
         /**
         * Update is a virtual fuxntion that must be implemented by each derived class.
         *
-        * @param millisFromLastCall is an int used to specify how many milliseconds passed from last call.
+        * @param microsecondsSinceLastCall is an int used to specify how many milliseconds passed from last call.
         */
-        virtual void Update(int millisFromLastCall) = 0;
+        virtual void Update(int microsecondsSinceLastCall) = 0;
     };
 
 }//namespace gu
