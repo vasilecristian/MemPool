@@ -80,7 +80,7 @@ namespace gu
 	    ResetTouch();
     }
     
-    bool StatesStack::Update(int millisFromLastCall)
+    bool StatesStack::Update(int microsecondsSinceLastCall)
     {
         if(m_pStatePoped.GetPtr() && (m_nStateIndex >= 0))
 	    {
@@ -157,7 +157,7 @@ namespace gu
 	    }
 	    else
 	    {
-		    m_pStateStack[m_nStateIndex]->Update(millisFromLastCall);
+            m_pStateStack[m_nStateIndex]->Update(microsecondsSinceLastCall);
 	    }
 
         return true;

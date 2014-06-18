@@ -208,13 +208,32 @@ namespace gu
 	}
 
 
+    /**
+     * @brief Use this to obtain the time between two calls of this function.
+     * @return the time elapsed in miliseconds.
+     */
     unsigned int MillisSinceLastCall();
+
+
+    /**
+     * @brief Use this to obtain the time between two calls of this function.
+     * @return the time elapsed in microseconds.
+     */
+    unsigned int MicrosecondsSinceLastCall();
 
 
     template<typename T>
     std::string ToString(T val)
     {
-        std::ostringstream s;
+        std::stringstream s;
+        s << val;
+        return s.str();
+    }
+
+    template<typename T>
+    std::wstring ToWString(T val)
+    {
+        std::wstringstream s;
         s << val;
         return s.str();
     }

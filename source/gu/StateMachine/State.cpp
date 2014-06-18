@@ -74,7 +74,7 @@ namespace gu
         return false;	
     }
     
-    void State::Update(int /*millisFromLastCall*/)
+    void State::Update(int /*microsecondsSinceLastCall*/)
     {
 
     }

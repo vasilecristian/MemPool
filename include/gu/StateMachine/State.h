@@ -43,7 +43,7 @@ namespace gu
         virtual void Resume();					        
 
         /** updates the game state  */
-        virtual void Update(int millisFromLastCall); 
+        virtual void Update(int microsecondsSinceLastCall);
 
         /**  draw the game state  */
         virtual void Draw(bool addToDrawList = false, int layerIndex = -1) = 0;                         
