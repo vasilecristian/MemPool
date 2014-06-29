@@ -176,8 +176,8 @@ namespace gu
 
 
     /** this is a helper macro for delete*/
-    #ifndef SAFE_DELETE
-    #define SAFE_DELETE(pointer) if(pointer){delete pointer; pointer = NULL;}
+    #ifndef GU_SAFE_DELETE
+    #define GU_SAFE_DELETE(pointer) if(pointer){delete pointer; pointer = NULL;}
     #endif
            
     
