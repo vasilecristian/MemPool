@@ -42,7 +42,7 @@ void operator delete( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 }
-void operator delete( void* p) noexcept
+void operator delete( void* p) 
 { 
     gu::Free(p); 
 }
@@ -60,7 +60,7 @@ void operator delete[] ( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 }
-void operator delete[] ( void* p) noexcept
+void operator delete[] ( void* p) 
 {
     gu::Free(p); 
 }
@@ -77,7 +77,7 @@ void* gu::Malloc( std::size_t size, const char *file, int line )
 
     if(gu::MemLeakDetector::IsCorruptionCheckEnabled())
     {
-        memset(p + size, VALUE_TO_DETECT, size);
+        memset((void*)((char*)p + size), VALUE_TO_DETECT, size);
     }
 
 	if(!p) 
@@ -105,7 +105,7 @@ std::atomic<bool> gu::MemLeakDetector::s_started(false);
 
 std::atomic<bool> gu::MemLeakDetector::s_corruptionCheck(false);
 
-map<const void *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
+map<const char *, gu::MemLeakDetector::AllocUnit*> gu::MemLeakDetector::s_memoryMap;
 
 map<ThreadID, std::string> gu::MemLeakDetector::s_messageByThread;
 
@@ -199,7 +199,7 @@ void gu::MemLeakDetector::Allocate( const void* ptr, const size_t size, const ch
     AllocUnit *unit = new AllocUnit(size, fileName, line, tid, s_messageByThread[tid]);
 	
     // Insert the allocation unit in to the map
-    s_memoryMap.insert( pair<const void*, gu::MemLeakDetector::AllocUnit*>( ptr, unit ) );
+    s_memoryMap.insert( pair<const char*, gu::MemLeakDetector::AllocUnit*>( (char*)ptr, unit ) );
 
     // Increment the total allocated size
     s_totalSize += size;
@@ -234,11 +234,11 @@ bool gu::MemLeakDetector::Free( const void* ptr)
     bool removed = false;
 
     s_enableByThread[tid] = false;
-    if(s_memoryMap.find(ptr) != s_memoryMap.end())
+    if(s_memoryMap.find((char*)ptr) != s_memoryMap.end())
     {
-        AllocUnit* unit = s_memoryMap[ ptr ];
+        AllocUnit* unit = s_memoryMap[(char*)ptr];
         
-        s_memoryMap.erase( ptr );
+        s_memoryMap.erase((char*)ptr);
 		
         s_totalSize -= unit->m_size;
 
@@ -251,8 +251,8 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         //this case is for pointers to objects, that are inside of an bigger object
         //the case of multiple inheritance!
         
-        s_memoryMap[ptr] = NULL;
-        auto it = s_memoryMap.find(ptr);
+        s_memoryMap[(char*)ptr] = NULL;
+        auto it = s_memoryMap.find((char*)ptr);
 
         --it;    
         if(it != s_memoryMap.end())
@@ -273,7 +273,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
 
             if(found)
             {
-                s_memoryMap.erase( p );
+                s_memoryMap.erase((char*)p);
 				
                 s_totalSize -= unit->m_size;
 
@@ -283,7 +283,7 @@ bool gu::MemLeakDetector::Free( const void* ptr)
         }
         
 
-        s_memoryMap.erase( ptr );		
+        s_memoryMap.erase((char*)ptr);
 
     }
     s_enableByThread[tid] = true;
@@ -358,9 +358,9 @@ void gu::MemLeakDetector::CorruptionCheck()
 
             if(unit)
             {
-                for(int i = 0; i<unit->m_size; i++)
+                for(size_t i = 0; i<unit->m_size; i++)
                 {
-                    void* ptr = (void*)it->first + unit->m_size + i;
+                    void* ptr = (char*)(it->first + unit->m_size + i);
                     if((*((char*)ptr)) != VALUE_TO_DETECT)
                     {
                         std::stringstream ss;

@@ -298,7 +298,7 @@ namespace gu
          * This will store all allocations. Calling NEW an entry will be added. Calling delete that entry will be removed.
          * At a certain point if you have something in map, means that are valid pointers (aka memory leaks)
          */
-        static std::map<const void *, AllocUnit*> s_memoryMap;
+        static std::map<const char *, AllocUnit*> s_memoryMap;
 
         /** the size in bytes of all the allocated memories */
         static size_t s_totalSize;
