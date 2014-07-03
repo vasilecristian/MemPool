@@ -154,7 +154,7 @@ namespace gu
      * @brief Use this to obtain the time between two calls of this function.
      * @return the time elapsed in miliseconds.
      */
-    unsigned int MillisSinceLastCall()
+    unsigned long int MillisSinceLastCall()
     {
         // lastCall 
         static std::chrono::time_point<std::chrono::system_clock> lastCall = std::chrono::system_clock::now();
@@ -162,7 +162,7 @@ namespace gu
         // current time
         std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
 
-        unsigned int valueToReturn = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastCall).count();
+        unsigned long int valueToReturn = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastCall).count();
 
         lastCall = now;
 
@@ -174,7 +174,7 @@ namespace gu
      * @brief Use this to obtain the time between two calls of this function.
      * @return the time elapsed in microseconds.
      */
-    unsigned int MicrosecondsSinceLastCall()
+    unsigned long int MicrosecondsSinceLastCall()
     {
         // lastCall
         static std::chrono::time_point<std::chrono::system_clock> lastCall = std::chrono::system_clock::now();
@@ -182,7 +182,7 @@ namespace gu
         // current time
         std::chrono::time_point<std::chrono::system_clock> now = std::chrono::system_clock::now();
 
-        unsigned int valueToReturn = std::chrono::duration_cast<std::chrono::microseconds>(now - lastCall).count();
+        unsigned long int valueToReturn = std::chrono::duration_cast<std::chrono::microseconds>(now - lastCall).count();
 
         lastCall = now;
 

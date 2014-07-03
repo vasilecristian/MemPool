@@ -212,14 +212,14 @@ namespace gu
      * @brief Use this to obtain the time between two calls of this function.
      * @return the time elapsed in miliseconds.
      */
-    unsigned int MillisSinceLastCall();
+    unsigned long int MillisSinceLastCall();
 
 
     /**
      * @brief Use this to obtain the time between two calls of this function.
      * @return the time elapsed in microseconds.
      */
-    unsigned int MicrosecondsSinceLastCall();
+    unsigned long int MicrosecondsSinceLastCall();
 
 
     template<typename T>
