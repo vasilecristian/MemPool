@@ -9,6 +9,12 @@
 #include "gu/Utils.h"
 #include "gu/Log.h"
 
+#ifndef _MSC_VER
+#define NOEXCEPT noexcept
+#else
+#define NOEXCEPT
+#endif
+
 
 using namespace std;
 
@@ -42,7 +48,7 @@ void operator delete( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 }
-void operator delete( void* p) 
+void operator delete( void* p) NOEXCEPT
 { 
     gu::Free(p); 
 }
@@ -60,7 +66,7 @@ void operator delete[] ( void* p, const char *file, int line)
 { 
     gu::Free(p); 
 }
-void operator delete[] ( void* p) 
+void operator delete[] ( void* p) NOEXCEPT
 {
     gu::Free(p); 
 }
