@@ -238,7 +238,7 @@ namespace gu
             GU_ASSERT(m_pData->IsRTTI());
 
             G* ptr = fr::dyna_cast<G>(m_pData);
-            GU_ASSERT(ptr != NULL);
+            //GU_ASSERT(ptr != NULL);
             if(ptr)
             {
 			    #if USE_THREAD_SAFE_SMARTP

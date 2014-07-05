@@ -5,7 +5,7 @@
 
 #include "gu/StateMachine/State.h"
 #include "gu/StateMachine/StatesStack.h"
-
+#include "gu/EventsQueue.h"
 
 
 namespace gu
@@ -56,12 +56,14 @@ namespace gu
     
     void State::Pause()	
     {
-
+        // Unregister from queue .
+        EventsQueue::GetInstance()->UnRegisterEventReceiver(this);
     }
     
     void State::Resume()	
     {
-
+        // Register it to the events queue to receive events.
+        EventsQueue::GetInstance()->RegisterEventReceiver(this);
     }
     
     bool State::OnEvent(SmartPtr<EventBase> /*event*/)

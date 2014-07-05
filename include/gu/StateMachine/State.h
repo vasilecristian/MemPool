@@ -10,7 +10,7 @@
 #include "gu/EventReceiver.hpp"
 #include "gu/Updatable.hpp"
 #include "gu/Drawable.hpp"
-#include "gu/MemPool.h"
+//#include "gu/MemPool.h"
 
 
 namespace gu

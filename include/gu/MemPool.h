@@ -5,6 +5,8 @@
 #ifndef MEMPOOL_BASE_H
 #define MEMPOOL_BASE_H
 
+#ifdef USE_MEMPOOL
+
 #include <RTTI.hpp>
 #include "gu/Threads.h"
 
@@ -144,6 +146,6 @@ namespace gu
 
 };
 
-
+#endif //USE_MEMPOOL
 
 #endif //MEMPOOL_BASE_H

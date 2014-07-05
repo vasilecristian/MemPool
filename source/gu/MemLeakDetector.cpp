@@ -2,6 +2,7 @@
 /*File created on 03.2013 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
+#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
 // Activate USE_MEMLEAKDETECTOR on source file, 
 // so the library will have the functions.
 
@@ -385,3 +386,4 @@ void gu::MemLeakDetector::CorruptionCheck()
     }
 }
 
+#endif //USE_MEMLEAKDETECTOR
