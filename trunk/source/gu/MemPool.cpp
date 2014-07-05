@@ -2,7 +2,7 @@
 /*File created on 03.2013 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
-
+#ifdef USE_MEMPOOL
 
 #include "gu/MemPool.h"
 //#include "MemLeakDetector.h"
@@ -226,3 +226,5 @@ namespace gu
 
 
 } // namespace gu
+
+#endif //USE_MEMPOOL

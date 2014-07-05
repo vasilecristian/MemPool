@@ -4,7 +4,7 @@
 #ifndef MEMLEAKDETECTOR_BASE_H
 #define MEMLEAKDETECTOR_BASE_H
 
-
+#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
 
 #include <iostream>
 #include <fstream>
@@ -322,7 +322,7 @@ void operator delete[] ( void* p);
 #endif //MEMLEAKDETECTOR_LEAKS_FILENAME
 
 
-#if defined(USE_MEMLEAKDETECTOR) && USE_MEMLEAKDETECTOR
+
 
 #define	NEW new(__FILE__, __LINE__)  
 #define	malloc(size) gu::Malloc(size, __FILE__, __LINE__)
