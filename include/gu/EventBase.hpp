@@ -13,7 +13,7 @@ namespace gu
     /** The EventBase class is the base for all events. */
     class EventBase: public fastrtti::IRTTI<EventBase>
     {
-        /** m_type - represent the type of the event and must take values from enum EVENTS. */
+        /** m_type - represent the type of the event */
         int m_type;
 
     public:
