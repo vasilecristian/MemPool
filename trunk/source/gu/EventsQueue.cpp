@@ -52,7 +52,7 @@ namespace gu
         }
     }
 
-    void EventsQueue::ProcessIncommingEvent()
+    void EventsQueue::ProcessPendingEvent()
     {
     
         //sizeE - this is very important! do not optimize or delete it!
