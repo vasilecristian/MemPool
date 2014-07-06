@@ -6,6 +6,7 @@
 #define SMARTP_BASE_H
 
 #include <RTTI.hpp>
+#include <gu/Utils.h>
 
 #include <mutex>
 #include <memory>

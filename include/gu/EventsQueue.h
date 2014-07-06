@@ -63,7 +63,7 @@ namespace gu
          * This will process all the pending events. Actually the events from m_eventsQ will be distributed to the 
          * events receiver from m_receiversQ.
          */
-        void ProcessIncommingEvent();
+        void ProcessPendingEvent();
        
     };
 
