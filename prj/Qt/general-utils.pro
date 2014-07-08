@@ -23,7 +23,6 @@ INCLUDEPATH += ../../include
 INCLUDEPATH += ../../include/fast-rtti
 
 HEADERS += \
-    ../../include/fast-rtti/RTTI.h \
     ../../include/gu/StateMachine/StatesStack.h \
     ../../include/gu/StateMachine/State.h \
     ../../include/gu/Utils.h \
