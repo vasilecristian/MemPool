@@ -2,10 +2,13 @@
 /*File created on 09.2012 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
-#include "gu/Utils.h"
-#include "gu/Log.h"
+#include "GenericUtils/Utils.h"
 #include <chrono>
 #include <math.h>
+
+#if defined(WIN32)
+#include <Windows.h>
+#endif 
 
 
 namespace gu
@@ -74,7 +77,7 @@ namespace gu
 
 
     
-    unsigned short GetU16(FILE */*file*/, bool /*isLittleEndian*/)
+    unsigned short GetU16(FILE *file, bool isLittleEndian)
     {
         //not implemented yet
         GU_ASSERT(false);
@@ -134,7 +137,7 @@ namespace gu
 
             std::stringstream ss;
             ss << "Assert '" << msg << "'" << endl;
-            LogMgr::GetInstance()->LogEX(LogMgr::LOG_ERROR, file, line, ss);
+            //LogMgr::GetInstance()->LogEX(LogMgr::LOG_ERROR, file, line, ss);
             #ifdef WIN32
             ss << "file: '" << file << "'" << endl;
             ss << "line: " << line << endl;
