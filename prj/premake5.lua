@@ -1,12 +1,12 @@
 include "../../premake/common/"
 
 
-solution "GenericUtils"
+solution "MemPool"
     addCommonConfig()
 	
 
     
-project "GenericUtils"
+project "MemPool"
     files
     {
         "../source/**.h",
