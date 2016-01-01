@@ -5,13 +5,8 @@
 #ifndef MEMPOOL_BASE_H
 #define MEMPOOL_BASE_H
 
-#ifdef USE_MEMPOOL
+#include <mutex>
 
-#include <RTTI.hpp>
-#include "gu/Threads.h"
-
-
-using namespace fastrtti;
 
 namespace gu
 {
@@ -21,72 +16,6 @@ namespace gu
     class MemPool
     {
         friend class IMemPool;
-
-    private:
-        
-        /** The purpose of the structure`s definition is that we can operate linkedlist conveniently */
-        struct Block                     
-        {
-            /** the previous Block */
-            Block *pPrev; 
-
-            /** the next Block */
-            Block *pNext;
-        };
-
-
-        static std::recursive_mutex s_mutexProtect;
-
-		
-
-
-
-
-        /** The address of memory pool. */
-        static void* s_pMemPool;            
-
-
-        /**
-         * Head pointer to Allocated linkedlist.
-         * when a memory bloc is alocated will be linked to this list, and unlinked from 
-         * the s_pFreeMemBlock.
-         */
-        static Block* s_pAllocatedMemBlock;
-
-        /**
-         * Head pointer to Free linkedlist. At the beginning all the memory blocks are 
-         * added to this list.
-         */
-        static Block* s_pFreeMemBlock;
-
-
-        /**
-         * Memory unit size. There are much unit in memory pool.
-         * The size is in bytes.
-         */
-        static unsigned long s_ulBlockSize;
-
-        /**
-         * The number of the memory blocks.
-         * The total amount of memory allocated is the (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block))); .
-         */
-        static unsigned long s_ulBlocksNum;
-
-        /**
-         * Memory pool size. Memory pool is make of memory unit.
-         * The total amount of memory allocated is the (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block))); .
-         */
-        static unsigned long s_ulPoolSize;
-
-
-    private:
-
-       /** The constructor. */
-        MemPool();
-
-       /** The destructor. */
-        virtual ~MemPool();
-
     public:
 
        /**
@@ -122,6 +51,63 @@ namespace gu
         * @param p a pointer to the memory that must be freed
         */
         static inline void Free( void* p );
+
+	private:
+
+		/** The purpose of the structure`s definition is that
+		* we can operate linked list conveniently */
+		struct Block
+		{
+			/** the previous Block */
+			Block *pPrev;
+
+			/** the next Block */
+			Block *pNext;
+		};
+
+
+		static std::recursive_mutex s_mutexProtect;
+
+
+		/** The address of memory pool. */
+		static void* s_pMemPool;
+
+
+		/**
+		* Head pointer to Allocated linkedlist.
+		* when a memory bloc is alocated will be linked to this list, and unlinked from
+		* the s_pFreeMemBlock.*/
+		static Block* s_pAllocatedMemBlock;
+
+		/**
+		* Head pointer to Free linkedlist. At the beginning all the memory blocks are
+		* added to this list.*/
+		static Block* s_pFreeMemBlock;
+
+
+		/**
+		* Memory unit size. There are much unit in memory pool.
+		* The size is in bytes.*/
+		static unsigned long s_ulBlockSize;
+
+		/**
+		* The number of the memory blocks.
+		* The total amount of memory allocated is the (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block))); .*/
+		static unsigned long s_ulBlocksNum;
+
+		/**
+		* Memory pool size. Memory pool is make of memory unit.
+		* The total amount of memory allocated is the (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block))); .*/
+		static unsigned long s_ulPoolSize;
+
+
+	private:
+
+		/** The constructor. */
+		MemPool();
+
+		/** The destructor. */
+		virtual ~MemPool();
     };
 
 
@@ -130,7 +116,7 @@ namespace gu
     * The IMemPool have only operators functions: operator new and operator delete, that will use the 
     * memory pool to allocate the required memory.
     */
-    class IMemPool: public IRTTI< IMemPool >
+    class IMemPool
     {
     public:
         void* operator new(size_t size);
@@ -145,7 +131,5 @@ namespace gu
     };
 
 };
-
-#endif //USE_MEMPOOL
 
 #endif //MEMPOOL_BASE_H

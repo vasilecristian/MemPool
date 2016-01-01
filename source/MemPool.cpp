@@ -2,9 +2,8 @@
 /*File created on 03.2013 by Cristian Vasile (vasile.cristian@gmail.com)*/
 /************************************************************************/
 
-#ifdef USE_MEMPOOL
 
-#include "GenericUtils/MemPool.h"
+#include "MemPool/MemPool.h"
 
 namespace gu
 {
@@ -16,20 +15,12 @@ namespace gu
     unsigned long MemPool::s_ulBlockSize = 255;
     unsigned long MemPool::s_ulPoolSize = (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block)));
 
-
-
-    
     std::recursive_mutex gu::MemPool::s_mutexProtect;
-
-
-
 
     void MemPool::InitPool()
     {
         if(s_pMemPool == NULL)
         {    
-
-
             s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
         
             if(s_pMemPool != NULL)
@@ -145,10 +136,8 @@ namespace gu
 
             s_pFreeMemBlock = pCurUnit;
 
-        
             return;
         }
-
     
         free(p);
     }
@@ -163,20 +152,11 @@ namespace gu
         {
             throw "allocation fail : no free memory";
         }
-
-
-        //gu::MemLeakDetector::Allocate( p, size, "file not specified", 0 );
-
-
-        return p;
+		return p;
     }
 
     void IMemPool::operator delete(void* p)
     {
-
-        //vsge::MemLeakDetector::Free( p );
-
-
         MemPool::Free(p);
     }
 
@@ -187,20 +167,12 @@ namespace gu
     { 
         void *p = MemPool::Alloc(size);
 
-
-        //vsge::MemLeakDetector::Allocate( p, size, file, line );
-
-
         return p;
     };
 
     void IMemPool::operator delete( void* p, const char *file, int line) 
     { 
-
-        //vsge::MemLeakDetector::Free( p );
-
-
-        MemPool::Free(p);
+		MemPool::Free(p);
     };
 
 
@@ -208,22 +180,13 @@ namespace gu
     void* IMemPool::operator new[]( size_t size, const char *file, int line ) 
     { 
         void *p = MemPool::Alloc(size);
-
-        //vsge::MemLeakDetector::Allocate( p, size, file, line );
-
         return p;
     }
 
     void IMemPool::operator delete[] ( void* p, const char *file, int line) 
     { 
-
-        //vsge::MemLeakDetector::Free( p );
-
-
         MemPool::Free(p);
     };
 
-
 } // namespace gu
 
-#endif //USE_MEMPOOL
