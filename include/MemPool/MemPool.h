@@ -26,10 +26,7 @@ namespace gu
         * @param ulUnitSize an unsigned long which means the size of an (minimum) block unit (in bytes)
         * @param ulUnitsNum an unsigned long which is means how many units to generate.
         */
-        static inline void InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum);
-
-       /** This function will initialize the pool buffer with the default size. */
-        static inline void InitPool();
+		static inline void InitPool(unsigned long ulUnitSize = 255, unsigned long ulUnitsNum = 10000);
 
        /** This function will free the pool buffer. */
         static void DeInitPool();

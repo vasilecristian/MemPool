@@ -17,44 +17,39 @@ namespace gu
 
     std::recursive_mutex gu::MemPool::s_mutexProtect;
 
-    void MemPool::InitPool()
-    {
-        if(s_pMemPool == NULL)
-        {    
-            s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
-        
-            if(s_pMemPool != NULL)
-            {
-
-                std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
-
-                memset(s_pMemPool, 0, s_ulPoolSize);
-
-                for(unsigned long i=0; i<s_ulBlocksNum; i++)  //Link all mem unit . Create linked list.
-                {
-                    Block *pCurUnit = (Block*)( (char*)s_pMemPool + i*(s_ulBlockSize+sizeof(Block)) );
-
-                    pCurUnit->pPrev = s_pFreeMemBlock;
-                    pCurUnit->pNext = NULL;    //Insert the NEW unit at head.
-
-                    if(s_pFreeMemBlock != NULL)
-                    {
-                        s_pFreeMemBlock->pNext = pCurUnit;
-                    }
-
-                    s_pFreeMemBlock = pCurUnit;
-                }
-            
-            }    
-        }
-    }
-
+  
     void MemPool::InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum)
     {
-        s_ulPoolSize = (ulUnitsNum * (ulUnitSize+sizeof(Block)));
-        s_ulBlockSize = ulUnitSize;
+		if (s_pMemPool == NULL)
+		{
+			s_ulPoolSize = (ulUnitsNum * (ulUnitSize + sizeof(Block)));
+			s_ulBlockSize = ulUnitSize;
 
-        InitPool();
+			s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
+
+			if (s_pMemPool != NULL)
+			{
+				std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
+
+				memset(s_pMemPool, 0, s_ulPoolSize);
+
+				for (unsigned long i = 0; i<s_ulBlocksNum; i++)  //Link all mem unit . Create linked list.
+				{
+					Block *pCurUnit = (Block*)((char*)s_pMemPool + i*(s_ulBlockSize + sizeof(Block)));
+
+					pCurUnit->pPrev = s_pFreeMemBlock;
+					pCurUnit->pNext = NULL;    //Insert the NEW unit at head.
+
+					if (s_pFreeMemBlock != NULL)
+					{
+						s_pFreeMemBlock->pNext = pCurUnit;
+					}
+
+					s_pFreeMemBlock = pCurUnit;
+				}
+
+			}
+		}
     }
 
     void MemPool::DeInitPool()
