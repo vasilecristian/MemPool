@@ -5,29 +5,31 @@
 
 #include "MemPool/MemPool.h"
 
-namespace gu
+namespace mp
 {
 
-    void* MemPool::s_pMemPool = NULL;
-    MemPool::Block* MemPool::s_pAllocatedMemBlock = NULL;
-    MemPool::Block* MemPool::s_pFreeMemBlock = NULL;
+    void* MemPool::s_pMemPool = nullptr;
+	MemPool::Block* MemPool::s_pAllocatedMemBlock = nullptr;
+	MemPool::Block* MemPool::s_pFreeMemBlock = nullptr;
     unsigned long MemPool::s_ulBlocksNum = 10000;
     unsigned long MemPool::s_ulBlockSize = 255;
-    unsigned long MemPool::s_ulPoolSize = (s_ulBlocksNum * (s_ulBlockSize+sizeof(Block)));
+    unsigned long MemPool::s_ulPoolSize = 0;
 
-    std::recursive_mutex gu::MemPool::s_mutexProtect;
+    std::recursive_mutex mp::MemPool::s_mutexProtect;
 
   
     void MemPool::InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum)
     {
-		if (s_pMemPool == NULL)
+		if (s_pMemPool == nullptr)
 		{
-			s_ulPoolSize = (ulUnitsNum * (ulUnitSize + sizeof(Block)));
+			s_ulBlocksNum = ulUnitsNum;
 			s_ulBlockSize = ulUnitSize;
+			s_ulPoolSize = (s_ulBlocksNum * (s_ulBlockSize + sizeof(Block)));
+			
 
 			s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
 
-			if (s_pMemPool != NULL)
+			if (s_pMemPool != nullptr)
 			{
 				std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
@@ -38,9 +40,9 @@ namespace gu
 					Block *pCurUnit = (Block*)((char*)s_pMemPool + i*(s_ulBlockSize + sizeof(Block)));
 
 					pCurUnit->pPrev = s_pFreeMemBlock;
-					pCurUnit->pNext = NULL;    //Insert the NEW unit at head.
+					pCurUnit->pNext = nullptr;    //Insert the NEW unit at head.
 
-					if (s_pFreeMemBlock != NULL)
+					if (s_pFreeMemBlock != nullptr)
 					{
 						s_pFreeMemBlock->pNext = pCurUnit;
 					}
@@ -79,8 +81,8 @@ namespace gu
 
         if((ulSize > s_ulBlockSize)
         || (bUseMemPool == false)
-        || (s_pMemPool == NULL)
-        || (s_pFreeMemBlock == NULL))
+		|| (s_pMemPool == nullptr)
+		|| (s_pFreeMemBlock == nullptr))
         {
             return malloc(ulSize);
         }
@@ -88,14 +90,14 @@ namespace gu
         //Now FreeList isn`t empty
         Block *pCurUnit = s_pFreeMemBlock;
         s_pFreeMemBlock = pCurUnit->pPrev;            //Get a unit from free linkedlist.
-        if(s_pFreeMemBlock != NULL)
+		if (s_pFreeMemBlock != nullptr)
         {
-            s_pFreeMemBlock->pNext = NULL;
+			s_pFreeMemBlock->pNext = nullptr;
         }
 
         pCurUnit->pPrev = s_pAllocatedMemBlock;
 
-        if(s_pAllocatedMemBlock != NULL)
+		if (s_pAllocatedMemBlock != nullptr)
         {
             s_pAllocatedMemBlock->pNext = pCurUnit; 
         }
@@ -118,13 +120,13 @@ namespace gu
             Block *pCurUnit = (Block*)( (char*)p - sizeof(Block) );
 
             s_pAllocatedMemBlock = pCurUnit->pPrev;
-            if(s_pAllocatedMemBlock != NULL)
+			if (s_pAllocatedMemBlock != nullptr)
             {
-                s_pAllocatedMemBlock->pNext = NULL;
+				s_pAllocatedMemBlock->pNext = nullptr;
             }
 
             pCurUnit->pPrev = s_pFreeMemBlock;
-            if(s_pFreeMemBlock != NULL)
+			if (s_pFreeMemBlock != nullptr)
             {
                 s_pFreeMemBlock->pNext = pCurUnit;
             }
@@ -143,7 +145,7 @@ namespace gu
     {
         void *p = MemPool::Alloc(size);
     
-        if(p == NULL) 
+		if (p == nullptr)
         {
             throw "allocation fail : no free memory";
         }

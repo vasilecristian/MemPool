@@ -8,9 +8,26 @@
 #include <mutex>
 
 
-namespace gu
+namespace mp
 {
-	class IMemPool;
+	/**
+	* This is an Interface. If you want a Class to use 'Memory Pool' you need to extend IMemPool.
+	* The IMemPool have only operators functions: operator new and operator delete, that will use the
+	* memory pool to allocate the required memory.*/
+	class IMemPool
+	{
+	public:
+		void* operator new(size_t size);
+		void operator delete(void* p);
+
+
+		void* operator new(size_t size, const char *file, int line);
+		void operator delete(void* p, const char *file, int line);
+
+		void* operator new[](size_t size, const char *file, int line);
+		void operator delete[](void* p, const char *file, int line);
+	};
+
 
    /** This is the implementation of a memory pool. */
 	class MemPool
@@ -107,26 +124,6 @@ namespace gu
 		virtual ~MemPool();
 	};
 
-
-   /**
-	* This is an Interface. If you want a Class to use 'Memory Pool' you need to extend IMemPool.
-	* The IMemPool have only operators functions: operator new and operator delete, that will use the 
-	* memory pool to allocate the required memory.
-	*/
-	class IMemPool
-	{
-	public:
-		void* operator new(size_t size);
-		void operator delete(void* p);
-
-
-		void* operator new( size_t size, const char *file, int line );
-		void operator delete( void* p, const char *file, int line) ;
-
-		void* operator new[]( size_t size, const char *file, int line ); 
-		void operator delete[] ( void* p, const char *file, int line) ;
-	};
-
-};
+} // namespace mp
 
 #endif //MEMPOOL_BASE_H
