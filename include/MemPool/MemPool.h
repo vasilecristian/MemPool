@@ -10,44 +10,44 @@
 
 namespace gu
 {
-    class IMemPool;
+	class IMemPool;
 
    /** This is the implementation of a memory pool. */
-    class MemPool
-    {
-        friend class IMemPool;
-    public:
+	class MemPool
+	{
+		friend class IMemPool;
+	public:
 
-       /**
-        * This function will initialize the pool buffer. If this 
-        * function will not be called the pool will be initialized with a default size when the 
-        * Alloc function will be called for the first time.
-        *
-        * @param ulUnitSize an unsigned long which means the size of an (minimum) block unit (in bytes)
-        * @param ulUnitsNum an unsigned long which is means how many units to generate.
-        */
+	   /**
+		* This function will initialize the pool buffer. If this 
+		* function will not be called the pool will be initialized with a default size when the 
+		* Alloc function will be called for the first time.
+		*
+		* @param ulUnitSize an unsigned long which means the size of an (minimum) block unit (in bytes)
+		* @param ulUnitsNum an unsigned long which is means how many units to generate.
+		*/
 		static inline void InitPool(unsigned long ulUnitSize = 255, unsigned long ulUnitsNum = 10000);
 
-       /** This function will free the pool buffer. */
-        static void DeInitPool();
+	   /** This function will free the pool buffer. */
+		static void DeInitPool();
 
 
-    private:
-       /**
-        * Allocate memory unit
-        *
-        * @param ulSize an unsigned long representing the size of needed memory.
-        * @param bUseMemPool a bool with default value true, used to specify if MemPool will be used or not.
-        * @return the address of an allocated memory chunk.
-        */
-        static inline void* Alloc(unsigned long ulSize, bool bUseMemPool = true);
+	private:
+	   /**
+		* Allocate memory unit
+		*
+		* @param ulSize an unsigned long representing the size of needed memory.
+		* @param bUseMemPool a bool with default value true, used to specify if MemPool will be used or not.
+		* @return the address of an allocated memory chunk.
+		*/
+		static inline void* Alloc(unsigned long ulSize, bool bUseMemPool = true);
 
-       /**
-        * Free memory unit
-        *
-        * @param p a pointer to the memory that must be freed
-        */
-        static inline void Free( void* p );
+	   /**
+		* Free memory unit
+		*
+		* @param p a pointer to the memory that must be freed
+		*/
+		static inline void Free( void* p );
 
 	private:
 
@@ -105,27 +105,27 @@ namespace gu
 
 		/** The destructor. */
 		virtual ~MemPool();
-    };
+	};
 
 
    /**
-    * This is an Interface. If you want a Class to use 'Memory Pool' you need to extend IMemPool.
-    * The IMemPool have only operators functions: operator new and operator delete, that will use the 
-    * memory pool to allocate the required memory.
-    */
-    class IMemPool
-    {
-    public:
-        void* operator new(size_t size);
-        void operator delete(void* p);
+	* This is an Interface. If you want a Class to use 'Memory Pool' you need to extend IMemPool.
+	* The IMemPool have only operators functions: operator new and operator delete, that will use the 
+	* memory pool to allocate the required memory.
+	*/
+	class IMemPool
+	{
+	public:
+		void* operator new(size_t size);
+		void operator delete(void* p);
 
 
-        void* operator new( size_t size, const char *file, int line );
-        void operator delete( void* p, const char *file, int line) ;
+		void* operator new( size_t size, const char *file, int line );
+		void operator delete( void* p, const char *file, int line) ;
 
-        void* operator new[]( size_t size, const char *file, int line ); 
-        void operator delete[] ( void* p, const char *file, int line) ;
-    };
+		void* operator new[]( size_t size, const char *file, int line ); 
+		void operator delete[] ( void* p, const char *file, int line) ;
+	};
 
 };
 
