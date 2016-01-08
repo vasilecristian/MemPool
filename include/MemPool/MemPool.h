@@ -29,13 +29,13 @@ namespace mp
 	};
 
 
-   /** This is the implementation of a memory pool. */
+	/** This is the implementation of a memory pool. */
 	class MemPool
 	{
 		friend class IMemPool;
 	public:
 
-	   /**
+		/**
 		* This function will initialize the pool buffer. If this 
 		* function will not be called the pool will be initialized with a default size when the 
 		* Alloc function will be called for the first time.
@@ -45,12 +45,12 @@ namespace mp
 		*/
 		static inline void InitPool(unsigned long ulUnitSize = 255, unsigned long ulUnitsNum = 10000);
 
-	   /** This function will free the pool buffer. */
+		/** This function will free the pool buffer. */
 		static void DeInitPool();
 
 
 	private:
-	   /**
+		/**
 		* Allocate memory unit
 		*
 		* @param ulSize an unsigned long representing the size of needed memory.
@@ -59,7 +59,7 @@ namespace mp
 		*/
 		static inline void* Alloc(unsigned long ulSize, bool bUseMemPool = true);
 
-	   /**
+		/**
 		* Free memory unit
 		*
 		* @param p a pointer to the memory that must be freed
