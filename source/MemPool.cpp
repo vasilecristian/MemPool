@@ -20,6 +20,8 @@ namespace mp
   
     void MemPool::InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum)
     {
+		std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
+
 		if (s_pMemPool == nullptr)
 		{
 			s_ulBlocksNum = ulUnitsNum;

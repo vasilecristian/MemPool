@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <chrono>
+#include <memory>
 #include "MemPool/MemPool.h"
 
 using namespace std;
@@ -31,7 +32,7 @@ int main(int argc, const char* argv[])
 	int size = 1000000;
 	mp::MemPool::InitPool(sizeof(A), size);
 
-	unsigned long micro = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	unsigned long start = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
 
 	for (int i = 0; i < size; i++)
@@ -44,21 +45,21 @@ int main(int argc, const char* argv[])
 		delete a;
 	}
 
-	unsigned long micro2 = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	cout << "pool elapsed time: " << micro2 - micro << endl;
+	unsigned long end = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	cout << "pool elapsed time: " << end - start << endl;
+	start = end;
+
 
 	for (int i = 0; i < size; i++)
 	{
 		B* a = new B();
-		a->m_a = 10;
-		a->m_b = 20;
-		a->m_c = 30;
-		a->m_d = 40;
 		delete a;
 	}
 
-	unsigned long micro3 = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	cout << "no pool elapsed time: " << micro3 - micro2 << endl;
+	end = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	cout << "no pool elapsed time: " << end - start << endl;
+	start = end;
+
 
 	//cout << a.m_a << " " << a.m_b << " " << a.m_c << " " << a.m_d << " " << endl;
 
