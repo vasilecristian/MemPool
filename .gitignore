@@ -1,2 +1,6 @@
 
 *.a
+prj/xcode4/ios/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserstate
+prj/xcode4/macos/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
+*.xcuserstate
