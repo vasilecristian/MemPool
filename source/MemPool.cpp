@@ -7,7 +7,6 @@
 
 namespace mp
 {
-
     void* MemPool::s_pMemPool = nullptr;
 	MemPool::Block* MemPool::s_pAllocatedMemBlock = nullptr;
 	MemPool::Block* MemPool::s_pFreeMemBlock = nullptr;
@@ -112,10 +111,9 @@ namespace mp
 
 
 
-    void MemPool::Free( void* p )
+    void MemPool::Free(void* p)
     {
         std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
-
 
         if( (s_pMemPool < p) && (p < (void*)((char*)s_pMemPool + s_ulPoolSize)))
         {
@@ -146,11 +144,14 @@ namespace mp
     void* IMemPool::operator new(size_t size)
     {
         void *p = MemPool::Alloc(size);
-    
+		
+#ifdef USE_EXCEPTIONS
 		if (p == nullptr)
         {
             throw "allocation fail : no free memory";
         }
+#endif //USE_EXCEPTIONS
+		
 		return p;
     }
 
