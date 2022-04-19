@@ -1,5 +1,7 @@
 
 *.a
+prj/vs2013/obj/
+prj/vs2019/obj/
 prj/xcode4/ios/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
 *.xcuserstate
 prj/xcode4/macos/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
