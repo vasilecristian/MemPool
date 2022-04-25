@@ -31,6 +31,7 @@
 *.out
 *.app
 prj/xcode4/macos/obj/
+prj/xcode4/ios/obj/
 tests/MemPoolTest/.vs/
 *.ipch
 test/MemPoolTest/Debug/*
@@ -39,3 +40,4 @@ test/MemPoolTest/Release/*
 *.ipdb
 *.xcuserstate
 *.user
+
