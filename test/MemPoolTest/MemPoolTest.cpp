@@ -71,7 +71,7 @@ int main(int argc, const char* argv[])
 		a->m_b = 20;
 		a->m_c = 30;
 		a->m_d = 40;
-		//delete a;
+		delete a;
 	}
 
 	unsigned long end = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -86,7 +86,7 @@ int main(int argc, const char* argv[])
 		a->m_b = 20;
 		a->m_c = 30;
 		a->m_d = 40;
-		//delete a;
+		delete a;
 	}
 
 	end = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();

@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32228.343
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemPoolTest", "MemPoolTest.vcxproj", "{41C1C30E-836B-4258-89E1-608FABF91D1E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemPool", "..\..\prj\vs2013\MemPool.vcxproj", "{1E1F7F1E-8AFE-FDB9-9316-8990FF74641B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MemPool", "..\..\prj\vs2019\MemPool.vcxproj", "{1E1F7F1E-8AFE-FDB9-9316-8990FF74641B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,5 +32,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C3DF8192-E6F6-4C0F-B219-7C1621BC6728}
 	EndGlobalSection
 EndGlobal

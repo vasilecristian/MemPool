@@ -40,4 +40,8 @@ test/MemPoolTest/Release/*
 *.ipdb
 *.xcuserstate
 *.user
-
+*.idb
+*.pdb
+prj/vs2019/.vs/
+prj/vs2019/obj/
+test/MemPoolTest/.vs/
