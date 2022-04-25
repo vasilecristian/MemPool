@@ -32,17 +32,17 @@
 
 namespace mp
 {
-    void* MemPool::s_pMemPool = nullptr;
-	MemPool::Block* MemPool::s_pAllocatedMemBlock = nullptr;
-	MemPool::Block* MemPool::s_pFreeMemBlock = nullptr;
-    unsigned long MemPool::s_ulBlocksNum = 10000;
-    unsigned long MemPool::s_ulBlockSize = 255;
-    unsigned long MemPool::s_ulPoolSize = 0;
+    void* MemPoolMgr::s_pMemPool = nullptr;
+	MemPoolMgr::Block* MemPoolMgr::s_pAllocatedMemBlock = nullptr;
+	MemPoolMgr::Block* MemPoolMgr::s_pFreeMemBlock = nullptr;
+    unsigned long MemPoolMgr::s_ulBlocksNum = 10000;
+    unsigned long MemPoolMgr::s_ulBlockSize = 255;
+    unsigned long MemPoolMgr::s_ulPoolSize = 0;
 
-    std::recursive_mutex mp::MemPool::s_mutexProtect;
+    std::recursive_mutex MemPoolMgr::s_mutexProtect;
 
   
-    void MemPool::InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum)
+    void MemPoolMgr::InitPool(unsigned long ulUnitSize, unsigned long ulUnitsNum)
     {
 		std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
@@ -52,8 +52,7 @@ namespace mp
 			s_ulBlockSize = ulUnitSize;
 			s_ulPoolSize = (s_ulBlocksNum * (s_ulBlockSize + sizeof(Block)));
 			
-
-			s_pMemPool = malloc(s_ulPoolSize);     //Allocate a memory block.
+			s_pMemPool = malloc(s_ulPoolSize);     //Allocate the entire buffer.
 
 			if (s_pMemPool != nullptr)
 			{
@@ -80,30 +79,19 @@ namespace mp
 		}
     }
 
-    void MemPool::DeInitPool()
+    void MemPoolMgr::DeInitPool()
     {
         std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
         free(s_pMemPool);
-    
+		s_pMemPool = nullptr;
     }
 
-    MemPool::MemPool()
-    {    
-        MemPool::InitPool();
-    }
-
-    MemPool::~MemPool()
-    {
-    
-    }
-
-
-    void* MemPool::Alloc(unsigned long ulSize, bool bUseMemPool)
+    void* MemPoolMgr::Alloc(unsigned long ulSize, bool bUseMemPool)
     {
         std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
-        MemPool::InitPool();
+		MemPoolMgr::InitPool();
 
         if((ulSize > s_ulBlockSize)
         || (bUseMemPool == false)
@@ -136,7 +124,7 @@ namespace mp
 
 
 
-    void MemPool::Free(void* p)
+    void MemPoolMgr::Free(void* p)
     {
         std::lock_guard<std::recursive_mutex> lock(s_mutexProtect);
 
@@ -165,52 +153,55 @@ namespace mp
     }
 
 
-
-    void* IMemPool::operator new(size_t size)
+    void* BaseMemPool::operator new(size_t size)
     {
-        void *p = MemPool::Alloc(size);
-		
-#ifdef USE_EXCEPTIONS
-		if (p == nullptr)
-        {
-            throw "allocation fail : no free memory";
-        }
-#endif //USE_EXCEPTIONS
+        void *p = MemPoolMgr::Alloc(size);
 		
 		return p;
     }
 
-    void IMemPool::operator delete(void* p)
+    void BaseMemPool::operator delete(void* p)
     {
-        MemPool::Free(p);
+		MemPoolMgr::Free(p);
     }
 
 
+	void* BaseMemPool::operator new[](size_t size)
+	{
+		void *p = MemPoolMgr::Alloc(size);
+		
+		return p;
+	}
+
+	void BaseMemPool::operator delete[](void* p)
+	{
+		MemPoolMgr::Free(p);
+	}
 
 
-    void* IMemPool::operator new( size_t size, const char *file, int line )
+
+    void* BaseMemPool::operator new(size_t size, const char *file, int line)
     { 
-        void *p = MemPool::Alloc(size);
-
+        void *p = MemPoolMgr::Alloc(size);
         return p;
     };
 
-    void IMemPool::operator delete( void* p, const char *file, int line) 
+    void BaseMemPool::operator delete(void* p, const char *file, int line)
     { 
-		MemPool::Free(p);
+		MemPoolMgr::Free(p);
     };
 
 
 
-    void* IMemPool::operator new[]( size_t size, const char *file, int line ) 
+    void* BaseMemPool::operator new[](size_t size, const char *file, int line)
     { 
-        void *p = MemPool::Alloc(size);
+        void *p = MemPoolMgr::Alloc(size);
         return p;
     }
 
-    void IMemPool::operator delete[] ( void* p, const char *file, int line) 
+    void BaseMemPool::operator delete[](void* p, const char *file, int line)
     { 
-        MemPool::Free(p);
+        MemPoolMgr::Free(p);
     };
 
 } // namespace gu

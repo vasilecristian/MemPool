@@ -10,6 +10,23 @@
 		2425939F280D361E00093FAF /* MemPoolTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 2425939E280D361E00093FAF /* MemPoolTest.cpp */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		24ED0B362816C364007459BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24ED0B322816C364007459BF /* MemPool.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = A7B29D1C52B3CC861C476B5C;
+			remoteInfo = MemPool;
+		};
+		24ED0B442816D41A007459BF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 24ED0B322816C364007459BF /* MemPool.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = FAC6E482554ACEAC2CDAEAC2;
+			remoteInfo = MemPool;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		24259392280D35F500093FAF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -24,7 +41,8 @@
 
 /* Begin PBXFileReference section */
 		24259394280D35F500093FAF /* MemPoolTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MemPoolTest; sourceTree = BUILT_PRODUCTS_DIR; };
-		2425939E280D361E00093FAF /* MemPoolTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemPoolTest.cpp; sourceTree = "<group>"; };
+		2425939E280D361E00093FAF /* MemPoolTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MemPoolTest.cpp; sourceTree = "<group>"; wrapsLines = 0; };
+		24ED0B322816C364007459BF /* MemPool.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MemPool.xcodeproj; path = ../../prj/xcode4/macos/MemPool.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,8 +59,10 @@
 		2425938B280D35F500093FAF = {
 			isa = PBXGroup;
 			children = (
+				24ED0B312816C34B007459BF /* Dependencies */,
 				2425939E280D361E00093FAF /* MemPoolTest.cpp */,
 				24259395280D35F500093FAF /* Products */,
+				24ED0B3A2816C977007459BF /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +72,29 @@
 				24259394280D35F500093FAF /* MemPoolTest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		24ED0B312816C34B007459BF /* Dependencies */ = {
+			isa = PBXGroup;
+			children = (
+				24ED0B322816C364007459BF /* MemPool.xcodeproj */,
+			);
+			name = Dependencies;
+			sourceTree = "<group>";
+		};
+		24ED0B332816C364007459BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				24ED0B372816C364007459BF /* libMemPool_d.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		24ED0B3A2816C977007459BF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -68,6 +111,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				24ED0B452816D41A007459BF /* PBXTargetDependency */,
 			);
 			name = MemPoolTest;
 			productName = MemPoolTest;
@@ -99,12 +143,28 @@
 			mainGroup = 2425938B280D35F500093FAF;
 			productRefGroup = 24259395280D35F500093FAF /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 24ED0B332816C364007459BF /* Products */;
+					ProjectRef = 24ED0B322816C364007459BF /* MemPool.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				24259393280D35F500093FAF /* MemPoolTest */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		24ED0B372816C364007459BF /* libMemPool_d.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMemPool_d.a;
+			remoteRef = 24ED0B362816C364007459BF /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXSourcesBuildPhase section */
 		24259390280D35F500093FAF /* Sources */ = {
@@ -116,6 +176,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		24ED0B452816D41A007459BF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MemPool;
+			targetProxy = 24ED0B442816D41A007459BF /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		24259399280D35F500093FAF /* Debug */ = {
@@ -233,7 +301,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = BR67ND9EV8;
 				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
 				HEADER_SEARCH_PATHS = ../../include/;
+				LIBRARY_SEARCH_PATHS = ./../../lib/xcode4/macos;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				"OTHER_LDFLAGS[arch=*]" = "-lMemPool_d";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -245,6 +317,9 @@
 				DEVELOPMENT_TEAM = BR67ND9EV8;
 				ENABLE_HARDENED_RUNTIME = YES;
 				HEADER_SEARCH_PATHS = ../../include/;
+				LIBRARY_SEARCH_PATHS = ./../../lib/xcode4/macos;
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				"OTHER_LDFLAGS[arch=*]" = "-lMemPool";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
