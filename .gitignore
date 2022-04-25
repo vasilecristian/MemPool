@@ -1,8 +1,41 @@
+# Prerequisites
+*.d
 
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
 *.a
-prj/vs2013/obj/
-prj/vs2019/obj/
-prj/xcode4/ios/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+prj/xcode4/macos/obj/
+tests/MemPoolTest/.vs/
+*.ipch
+test/MemPoolTest/Debug/*
+test/MemPoolTest/Release/*
+*.iobj
+*.ipdb
 *.xcuserstate
-prj/xcode4/macos/MemPool.xcodeproj/project.xcworkspace/xcuserdata/vasile.cristian.xcuserdatad/UserInterfaceState.xcuserstate
-*.xcuserstate
+*.user
